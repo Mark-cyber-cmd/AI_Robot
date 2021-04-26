@@ -5,7 +5,7 @@ import threading
 import math
 import sys
 
-"""这是test分支里面的python程序"""
+"""这是test分支里面的python程序 第二遍"""
 """陀螺仪参数设置"""
 command_single_data = b'\xFF\xAA\x03\x0C\x00'
 command_setup_open = b'\xFF\xAA\x69\x88\xB5'
