@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<NewDataSet>
+  <Type>BUS Servo</Type>
+  <Table>
+    <ID>1</ID>
+    <Move>#1 P500 #2 P500 #3 P105 #4 P500 #5 P500 #6 P894</Move>
+    <Time>T400</Time>
+    <position>POS1X=135Y=2 POS2X=279Y=23 POS3X=315Y=123 POS4X=409Y=221 POS5X=285Y=321 POS6X=337Y=419</position>
+    <ID>2</ID>
+    <Move>#1 P500 #2 P800 #3 P105 #4 P500 #5 P199 #6 P894</Move>
+    <Time>T400</Time>
+    <position>POS1X=135Y=2 POS2X=279Y=23 POS3X=315Y=123 POS4X=409Y=221 POS5X=285Y=321 POS6X=337Y=419</position>
+    <ID>3</ID>
+    <Move>#1 P500 #2 P875 #3 P105 #4 P500 #5 P124 #6 P894</Move>
+    <Time>T120</Time>
+    <position>POS1X=135Y=2 POS2X=279Y=23 POS3X=315Y=123 POS4X=409Y=221 POS5X=285Y=321 POS6X=337Y=419</position>
+    <ID>4</ID>
+    <Move>#1 P500 #2 P875 #3 P500 #4 P500 #5 P124 #6 P500</Move>
+    <Time>T500</Time>
+    <position>POS1X=135Y=2 POS2X=279Y=23 POS3X=315Y=123 POS4X=409Y=221 POS5X=285Y=321 POS6X=337Y=419</position>
+    <ID>5</ID>
+    <Move>#1 P500 #2 P500 #3 P500 #4 P500 #5 P500 #6 P500</Move>
+    <Time>T500</Time>
+    <position>POS1X=135Y=2 POS2X=279Y=23 POS3X=315Y=123 POS4X=409Y=221 POS5X=285Y=321 POS6X=337Y=419</position>
+    <ID>6</ID>
+    <Move>#1 P500 #2 P124 #3 P500 #4 P500 #5 P875 #6 P500</Move>
+    <Time>T500</Time>
+    <position>POS1X=135Y=2 POS2X=279Y=23 POS3X=315Y=123 POS4X=409Y=221 POS5X=285Y=321 POS6X=337Y=419</position>
+    <ID>7</ID>
+    <Move>#1 P500 #2 P124 #3 P800 #4 P500 #5 P875 #6 P200</Move>
+    <Time>T400</Time>
+    <position>POS1X=135Y=2 POS2X=279Y=23 POS3X=315Y=123 POS4X=409Y=221 POS5X=285Y=321 POS6X=337Y=419</position>
+    <ID>8</ID>
+    <Move>#1 P500 #2 P124 #3 P961 #4 P500 #5 P875 #6 P38</Move>
+    <Time>T300</Time>
+    <position>POS1X=135Y=2 POS2X=279Y=23 POS3X=315Y=123 POS4X=409Y=221 POS5X=285Y=321 POS6X=337Y=419</position>
+    <ID>9</ID>
+    <Move>#1 P500 #2 P162 #3 P922 #4 P500 #5 P837 #6 P77</Move>
+    <Time>T100</Time>
+    <position>POS1X=135Y=2 POS2X=279Y=23 POS3X=315Y=123 POS4X=409Y=221 POS5X=285Y=321 POS6X=337Y=419</position>
+    <ID>10</ID>
+    <Move>#1 P500 #2 P500 #3 P922 #4 P500 #5 P500 #6 P77</Move>
+    <Time>T450</Time>
+    <position>POS1X=135Y=2 POS2X=279Y=23 POS3X=315Y=123 POS4X=409Y=221 POS5X=285Y=321 POS6X=337Y=419</position>
+    <ID>11</ID>
+    <Move>#1 P500 #2 P500 #3 P500 #4 P500 #5 P500 #6 P500</Move>
+    <Time>T400</Time>
+    <position>POS1X=135Y=2 POS2X=279Y=23 POS3X=315Y=123 POS4X=409Y=221 POS5X=285Y=321 POS6X=337Y=419</position>
+  </Table>
+</NewDataSet>

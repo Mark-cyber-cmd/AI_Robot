@@ -1,0 +1,15 @@
+//SERVER配置
+AT+CWMODE_DEF=3 	//softAP+Station模式
+AT+CWSAP_DEF="AI_Robot","88888888",1,0	//设置wifi特征
+AT+CIPSTA_DEF="192.168.43.186"	//设置网关IP
+AT+CIPMUX=1 			//使能多链接
+AT+CIPSERVER=1,8000  		//使能8000端口
+AT+CIPSTO=0 			//永不断链
+AT+CIFSR 
+
+//CLIENT配置
+AT+CWMODE=3
+AT+CWJAP_DEF="AI_Robot","88888888"
+AT+SAVETRANSLINK=1,"192.168.43.186",8000,"TCP"    
+AT+UART_DEF=9600,8,1,0,0   //9600 波特率，8位数据位，1位停止位，无奇偶校验，无流控
+

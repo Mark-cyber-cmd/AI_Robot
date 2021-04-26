@@ -1,0 +1,4 @@
+C:\Users\dingy\Desktop\智能机器腿仿真\JY61P\上位机\标准上位机_Normal\temp\MiniIMU.exe,C:\Users\dingy\Desktop\智能机器腿仿真\JY61P\上位机\标准上位机_Normal\MiniIMU.exe
+C:\Users\dingy\Desktop\智能机器腿仿真\JY61P\上位机\标准上位机_Normal\temp\SerialPortProtocol.dll,C:\Users\dingy\Desktop\智能机器腿仿真\JY61P\上位机\标准上位机_Normal\SerialPortProtocol.dll
+C:\Users\dingy\Desktop\智能机器腿仿真\JY61P\上位机\标准上位机_Normal\temp\UChartInfo.dll,C:\Users\dingy\Desktop\智能机器腿仿真\JY61P\上位机\标准上位机_Normal\UChartInfo.dll
+C:\Users\dingy\Desktop\智能机器腿仿真\JY61P\上位机\标准上位机_Normal\temp\uChartView.dll,C:\Users\dingy\Desktop\智能机器腿仿真\JY61P\上位机\标准上位机_Normal\uChartView.dll

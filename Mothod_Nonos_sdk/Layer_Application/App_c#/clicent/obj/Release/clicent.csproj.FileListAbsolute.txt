@@ -1,0 +1,15 @@
+D:\my c#\tcp\service\service\clicent\bin\Release\clicent.exe.config
+D:\my c#\tcp\service\service\clicent\bin\Release\clicent.exe
+D:\my c#\tcp\service\service\clicent\bin\Release\clicent.pdb
+D:\my c#\tcp\service\service\clicent\obj\Release\clicent.csprojAssemblyReference.cache
+D:\my c#\tcp\service\service\clicent\obj\Release\MainWindow.g.cs
+D:\my c#\tcp\service\service\clicent\obj\Release\App.g.cs
+D:\my c#\tcp\service\service\clicent\obj\Release\clicent_MarkupCompile.cache
+D:\my c#\tcp\service\service\clicent\obj\Release\clicent_MarkupCompile.lref
+D:\my c#\tcp\service\service\clicent\obj\Release\MainWindow.baml
+D:\my c#\tcp\service\service\clicent\obj\Release\clicent.g.resources
+D:\my c#\tcp\service\service\clicent\obj\Release\clicent.Properties.Resources.resources
+D:\my c#\tcp\service\service\clicent\obj\Release\clicent.csproj.GenerateResource.cache
+D:\my c#\tcp\service\service\clicent\obj\Release\clicent.csproj.CoreCompileInputs.cache
+D:\my c#\tcp\service\service\clicent\obj\Release\clicent.exe
+D:\my c#\tcp\service\service\clicent\obj\Release\clicent.pdb

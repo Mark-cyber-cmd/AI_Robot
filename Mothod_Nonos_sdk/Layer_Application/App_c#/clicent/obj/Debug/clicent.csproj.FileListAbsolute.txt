@@ -1,0 +1,15 @@
+D:\my c#\tcp\service\service\clicent\obj\Debug\clicent.csprojAssemblyReference.cache
+D:\my c#\tcp\service\service\clicent\obj\Debug\MainWindow.g.cs
+D:\my c#\tcp\service\service\clicent\obj\Debug\App.g.cs
+D:\my c#\tcp\service\service\clicent\obj\Debug\clicent_MarkupCompile.cache
+D:\my c#\tcp\service\service\clicent\obj\Debug\clicent_MarkupCompile.lref
+D:\my c#\tcp\service\service\clicent\bin\Debug\clicent.exe.config
+D:\my c#\tcp\service\service\clicent\bin\Debug\clicent.exe
+D:\my c#\tcp\service\service\clicent\bin\Debug\clicent.pdb
+D:\my c#\tcp\service\service\clicent\obj\Debug\MainWindow.baml
+D:\my c#\tcp\service\service\clicent\obj\Debug\clicent.g.resources
+D:\my c#\tcp\service\service\clicent\obj\Debug\clicent.Properties.Resources.resources
+D:\my c#\tcp\service\service\clicent\obj\Debug\clicent.csproj.GenerateResource.cache
+D:\my c#\tcp\service\service\clicent\obj\Debug\clicent.csproj.CoreCompileInputs.cache
+D:\my c#\tcp\service\service\clicent\obj\Debug\clicent.exe
+D:\my c#\tcp\service\service\clicent\obj\Debug\clicent.pdb
