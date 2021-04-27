@@ -3,7 +3,6 @@ import time
 import struct
 import threading
 import math
-import sys
 
 """这是test分支里面的python程序 第二遍 哈哈哈"""
 """陀螺仪参数设置"""
