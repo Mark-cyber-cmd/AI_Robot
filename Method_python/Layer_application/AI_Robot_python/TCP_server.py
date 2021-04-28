@@ -13,9 +13,11 @@ command_setup_close = b'\xFF\xAA\x00\x00\x00'
 command_setup_speed_50Hz = b'\xFF\xAA\x03\x09\x00'
 command_setup_data_angel = b'\xFF\xAA\x02\x08\x00'
 """控制舵机参数"""
-con_time = 500  # ms
+con_time = 400  # ms
 N = 1
 """绘图参数"""
+axis_x_address = r"C:\Users\dingy\Desktop\Matlab\x_axis.txt"
+axis_y_address = r"C:\Users\dingy\Desktop\Matlab\y_axis.txt"
 axis_x_init = 0
 axis_y_init = 0
 axis_x = [axis_x_init, ]
@@ -25,11 +27,13 @@ gyro_data = {'temper1': 0, 'roll1': 0, 'pitch1': 0, 'yaw1': 0, 'fps1': 0,
              'temper2': 0, 'roll2': 0, 'pitch2': 0, 'yaw2': 0, 'fps2': 0,
              'temper3': 0, 'roll3': 0, 'pitch3': 0, 'yaw3': 0, 'fps3': 0,
              'temper4': 0, 'roll4': 0, 'pitch4': 0, 'yaw4': 0, 'fps4': 0}
-"""舵机数据"""
-servo_data = {'id': [1, 2, 3, 4, 5, 6], 'angel': [500, 500, 500, 500, 500, 500],
-              'time': con_time, 'cmd': 3}
+"""总线舵机数据"""
+bus_data = {'id': [1, 2, 3, 4, 5, 6], 'angel': [500, 500, 500, 500, 500, 500],
+            'time': con_time, 'cmd': 3}
+bus_data_back = {'id': [1, 2, 3, 4, 5, 6], 'angel': [500, 500, 500, 500, 500, 500]}
 """TCP客户端连接管理"""
-client_index = {'servo': 0, 'gyro_1': 0, 'gyro_2': 0, 'gyro_3': 0, 'gyro_4': 0}
+client_index = {'bus': 0, 'gyro_1': 0, 'gyro_2': 0, 'gyro_3': 0, 'gyro_4': 0}
+client_status = {'bus': False, 'gyro_1': False, 'gyro_2': False, 'gyro_3': False, 'gyro_4': False}
 
 
 def gyro_thread(gyro_client, gyro_addr):
@@ -62,20 +66,20 @@ def gyro_thread(gyro_client, gyro_addr):
                     struct.unpack('h', raw_data[6:8])[0] / 32768 * 180
 
                 if client_id == 1:
-                    servo_data["angel"][1 - 1] = \
+                    bus_data["angel"][1 - 1] = \
                         500 + gyro_data['yaw1'] / 270 * 1000
-                    servo_data["angel"][2 - 1] = \
+                    bus_data["angel"][2 - 1] = \
                         500 + (gyro_data['roll1'] + gyro_data['roll2']) / 270 * 1000
                 if client_id == 2:
-                    servo_data["angel"][3 - 1] = \
+                    bus_data["angel"][3 - 1] = \
                         500 + gyro_data['roll2'] / 270 * 1000
                 if client_id == 3:
-                    servo_data["angel"][4 - 1] = \
+                    bus_data["angel"][4 - 1] = \
                         500 + gyro_data['yaw3'] / 270 * 1000
-                    servo_data["angel"][5 - 1] = \
+                    bus_data["angel"][5 - 1] = \
                         500 - (gyro_data['roll3'] + gyro_data['roll4']) / 270 * 1000
                 if client_id == 4:
-                    servo_data["angel"][6 - 1] = \
+                    bus_data["angel"][6 - 1] = \
                         500 - gyro_data['roll4'] / 270 * 1000
                 if time.time() - time_before > 1:
                     time_before = time.time()
@@ -86,46 +90,55 @@ def gyro_thread(gyro_client, gyro_addr):
     return 1
 
 
-def servo_thread(servo_client, servo_addr):
-    if servo_addr[0] == '192.168.43.189':
-        client_index['servo'] = servo_client
-        print("舵机控制器成功连接")
+def bus_thread(bus_client, bus_addr):
+    if bus_addr[0] == '192.168.43.189':
+        client_index['bus'] = bus_client
+        client_status['bus'] = True
+        print("舵机总线控制器成功连接")
         while True:
-            servo_client.send(CMD_SERVO_MOVE(servo_data['id'], servo_data['cmd'],
-                                             servo_data['angel'], servo_data['time']))
-            for i in range(N):
-                with open(r"C:\Users\dingy\Desktop\Matlab\x_axis.txt", "a") as f_x_axis:
-                    f_x_axis.write(str(time.time() - time_start))
-                    f_x_axis.write(" ")
-                with open(r"C:\Users\dingy\Desktop\Matlab\y_axis.txt", "a") as f_y_axis:
-                    servo_client.send(CMD_MULT_SERVO_POS([5]))
-                    pos_data = servo_client.recv(8)
-                    f_y_axis.write(str(struct.unpack('H', pos_data[6:8])[0]))
-                    f_y_axis.write(" ")
-                time.sleep(con_time / N / 1000)
-    return 1
+            servo_move(bus_client, bus_data['id'], bus_data['cmd'], bus_data['angel'], bus_data['time'])
+            servo_pos(bus_client, [1, 2, 3, 4, 5, 6])
+            # servo_record(bus_client, 6)
+    return
 
 
-def CMD_SERVO_MOVE(s_id, s_cmd, s_angle, s_time):
+def servo_record(bus_client, servo_id):
+    if client_status['bus']:
+        with open(axis_x_address, "a") as f_x_axis:
+            f_x_axis.write(str(time.time() - time_start))
+            f_x_axis.write(" ")
+        with open(axis_y_address, "a") as f_y_axis:
+            servo_pos(bus_client, [1, 2, 3, 4, 5, 6])
+            f_y_axis.write(str(bus_data_back['angel'][servo_id - 1]))
+            f_y_axis.write(" ")
+    return
+
+
+def servo_move(bus_client, s_id, s_cmd, s_angle, s_time):
     servo_cmd = [b'\x55', b'\x55', struct.pack('B', len(s_id) * 3 + 5), struct.pack('B', s_cmd),
                  struct.pack('B', len(s_id)), struct.pack('H', s_time)]
     for i in range(len(s_id)):
         servo_cmd.append(struct.pack('B', s_id[i]))
         servo_cmd.append(struct.pack('H', int(s_angle[i])))
     servo_cmd = b''.join(servo_cmd)
-    return servo_cmd
+    bus_client.send(servo_cmd)
+    return
 
 
-def CMD_MULT_SERVO_POS(s_id):
-    servo_cmd = [b'\x55', b'\x55', struct.pack('B', len(s_id) + 3), b'\x15',
-                 struct.pack('B', len(s_id))]
+def servo_pos(bus_client, s_id):
     for i in range(len(s_id)):
-        servo_cmd.append(struct.pack('B', s_id[i]))
-    servo_cmd = b''.join(servo_cmd)
-    return servo_cmd
+        servo_cmd = [b'\x55', b'\x55', struct.pack('B', 4), b'\x15', struct.pack('B', 1), struct.pack('B', s_id[i])]
+        servo_cmd = b''.join(servo_cmd)
+        bus_client.send(servo_cmd)
+        pos_data = bus_client.recv(8)
+        try:
+            bus_data_back['angel'][s_id[i] - 1] = struct.unpack('H', pos_data[6:8])[0]
+        except Exception:
+            print("舵机数据回传错误")
+    return
 
 
-def TEST_FOR_MAT():
+def math_test():
     print("1.冲激信号 2.阶跃信号 3.斜坡信号 4.正弦信号")
     print("请选择输出信号：")
     # sys_status = sys.stdin.readline()
@@ -133,28 +146,29 @@ def TEST_FOR_MAT():
     if sys_status[0] == '1':
         for i in range(0, 1000):
             if i == 500:
-                servo_data['angel'][4] = 800
+                bus_data['angel'][4] = 800
             else:
-                servo_data['angel'][4] = 500
+                bus_data['angel'][4] = 500
             time.sleep(0.01)
 
     if sys_status[0] == '2':
         for i in range(0, 1000):
             if i > 500:
-                servo_data['angel'][4] = 800
+                bus_data['angel'][4] = 800
             else:
-                servo_data['angel'][4] = 500
+                bus_data['angel'][4] = 500
             time.sleep(0.01)
 
     if sys_status[0] == '3':
         for i in range(0, 1000):
-            servo_data['angel'][4] = int(500 + i * 0.3)
+            bus_data['angel'][4] = int(500 + i * 0.3)
             time.sleep(0.01)
 
     if sys_status[0] == '4':
         for i in range(0, 1000):
-            servo_data['angel'][4] = int(500 + 300 * math.sin(2 * math.pi * i / 1000))
+            bus_data['angel'][4] = int(500 + 300 * math.sin(2 * math.pi * i / 1000))
             time.sleep(0.01)
+    return
 
 
 """           建立一个服务端            """
@@ -172,5 +186,5 @@ if __name__ == '__main__':
         s_client, addr = server.accept()  # 不阻塞
         gyro_app = threading.Thread(target=gyro_thread, args=(s_client, addr))
         gyro_app.start()
-        servo_app = threading.Thread(target=servo_thread, args=(s_client, addr))
+        servo_app = threading.Thread(target=bus_thread, args=(s_client, addr))
         servo_app.start()
