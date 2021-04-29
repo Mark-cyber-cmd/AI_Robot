@@ -68,16 +68,22 @@ def gyro_thread(gyro_client, gyro_addr):
                 if client_id == 1:
                     bus_data["angel"][1 - 1] = \
                         500 + gyro_data['yaw1'] / 270 * 1000
-                    bus_data["angel"][2 - 1] = \
-                        500 + (gyro_data['roll1'] + gyro_data['roll2']) / 270 * 1000
+                    if gyro_data['roll2'] > 0:
+                        bus_data["angel"][2 - 1] = \
+                            500 + (gyro_data['roll1'] + gyro_data['roll2']) / 270 * 1000
+                    else:
+                        bus_data["angel"][2 - 1] = 500
                 if client_id == 2:
                     bus_data["angel"][3 - 1] = \
                         500 + gyro_data['roll2'] / 270 * 1000
                 if client_id == 3:
                     bus_data["angel"][4 - 1] = \
                         500 + gyro_data['yaw3'] / 270 * 1000
-                    bus_data["angel"][5 - 1] = \
-                        500 - (gyro_data['roll3'] + gyro_data['roll4']) / 270 * 1000
+                    if gyro_data['roll4'] > 0:
+                        bus_data["angel"][5 - 1] = \
+                            500 - (gyro_data['roll3'] + gyro_data['roll4']) / 270 * 1000
+                    else:
+                        bus_data['angel'][5 - 1] = 500
                 if client_id == 4:
                     bus_data["angel"][6 - 1] = \
                         500 - gyro_data['roll4'] / 270 * 1000
@@ -98,7 +104,9 @@ def bus_thread(bus_client, bus_addr):
         while True:
             servo_move(bus_client, bus_data['id'], bus_data['cmd'], bus_data['angel'], bus_data['time'])
             servo_pos(bus_client, [1, 2, 3, 4, 5, 6])
+            print(bus_data_back['angel'])
             # servo_record(bus_client, 6)
+            time.sleep(con_time / 1000)
     return
 
 
