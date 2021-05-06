@@ -28,7 +28,7 @@ gyro_data = {'temper1': 0, 'roll1': 0, 'pitch1': 0, 'yaw1': 0, 'fps1': 0,
              'temper3': 0, 'roll3': 0, 'pitch3': 0, 'yaw3': 0, 'fps3': 0,
              'temper4': 0, 'roll4': 0, 'pitch4': 0, 'yaw4': 0, 'fps4': 0}
 """总线舵机数据"""
-bus_data = {'id': [1, 2, 3, 4, 5, 6], 'angel': [500, 500, 500, 500, 500, 500],
+bus_data = {'id': [1, 2, 3, 4, 5, 6], 'angel': [400, 500, 500, 500, 500, 500],
             'time': con_time, 'cmd': 3}
 bus_data_back = {'id': [1, 2, 3, 4, 5, 6], 'angel': [500, 500, 500, 500, 500, 500]}
 """TCP客户端连接管理"""
@@ -105,20 +105,21 @@ def bus_thread(bus_client, bus_addr):
             servo_move(bus_client, bus_data['id'], bus_data['cmd'], bus_data['angel'], bus_data['time'])
             servo_pos(bus_client, [1, 2, 3, 4, 5, 6])
             print(bus_data_back['angel'])
-            # servo_record(bus_client, 6)
+            servo_record(bus_client)
             time.sleep(con_time / 1000)
     return
 
 
-def servo_record(bus_client, servo_id):
+def servo_record(bus_client):
     if client_status['bus']:
         with open(axis_x_address, "a") as f_x_axis:
             f_x_axis.write(str(time.time() - time_start))
             f_x_axis.write(" ")
         with open(axis_y_address, "a") as f_y_axis:
             servo_pos(bus_client, [1, 2, 3, 4, 5, 6])
-            f_y_axis.write(str(bus_data_back['angel'][servo_id - 1]))
-            f_y_axis.write(" ")
+            for i in range(0, 5):
+                f_y_axis.write(str(bus_data_back['angel'][i]))
+                f_y_axis.write(" ")
     return
 
 
