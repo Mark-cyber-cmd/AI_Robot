@@ -3,6 +3,8 @@ import time
 import struct
 import threading
 import math
+import numpy as np
+import matplotlib.pyplot as plt
 
 """这是test分支里面的python程序 第二遍 哈哈哈 """
 """陀螺仪参数设置"""
@@ -28,12 +30,48 @@ gyro_data = {'temper1': 0, 'roll1': 0, 'pitch1': 0, 'yaw1': 0, 'fps1': 0,
              'temper3': 0, 'roll3': 0, 'pitch3': 0, 'yaw3': 0, 'fps3': 0,
              'temper4': 0, 'roll4': 0, 'pitch4': 0, 'yaw4': 0, 'fps4': 0}
 """总线舵机数据"""
-bus_data = {'id': [1, 2, 3, 4, 5, 6], 'angel': [400, 500, 500, 500, 500, 500],
+bus_data = {'id': [1, 2, 3, 4, 5, 6], 'angel': [500, 500, 500, 500, 500, 500],
             'time': con_time, 'cmd': 3}
 bus_data_back = {'id': [1, 2, 3, 4, 5, 6], 'angel': [500, 500, 500, 500, 500, 500]}
 """TCP客户端连接管理"""
 client_index = {'bus': 0, 'gyro_1': 0, 'gyro_2': 0, 'gyro_3': 0, 'gyro_4': 0}
 client_status = {'bus': False, 'gyro_1': False, 'gyro_2': False, 'gyro_3': False, 'gyro_4': False}
+
+
+def control_algorithm_n(client_id):
+    if client_id == 1:
+        bus_data["angel"][1 - 1] = \
+            500 + gyro_data['yaw1'] / 270 * 1000
+        if gyro_data['roll2'] > 0:
+            bus_data["angel"][2 - 1] = \
+                500 + (gyro_data['roll1'] + gyro_data['roll2']) / 270 * 1000
+        else:
+            bus_data["angel"][2 - 1] = 500
+    if client_id == 2:
+        bus_data["angel"][3 - 1] = \
+            500 + gyro_data['roll2'] / 270 * 1000
+    if client_id == 3:
+        bus_data["angel"][4 - 1] = \
+            500 + gyro_data['yaw3'] / 270 * 1000
+        if gyro_data['roll4'] > 0:
+            bus_data["angel"][5 - 1] = \
+                500 - (gyro_data['roll3'] + gyro_data['roll4']) / 270 * 1000
+        else:
+            bus_data['angel'][5 - 1] = 500
+    if client_id == 4:
+        bus_data["angel"][6 - 1] = \
+            500 - gyro_data['roll4'] / 270 * 1000
+        if bus_data["angel"][6 - 1] < 500:       # 写死的部分
+            bus_data["angel"][1 - 1] = 400
+            bus_data["angel"][4 - 1] = 450
+        if bus_data["angel"][6 - 1] > 500:
+            bus_data["angel"][1 - 1] = 500
+            bus_data["angel"][4 - 1] = 500
+    return
+
+
+def control_algorithm_kalman():
+    return
 
 
 def gyro_thread(gyro_client, gyro_addr):
@@ -65,28 +103,8 @@ def gyro_thread(gyro_client, gyro_addr):
                 gyro_data['yaw' + str(client_id)] = \
                     struct.unpack('h', raw_data[6:8])[0] / 32768 * 180
 
-                if client_id == 1:
-                    bus_data["angel"][1 - 1] = \
-                        500 + gyro_data['yaw1'] / 270 * 1000
-                    if gyro_data['roll2'] > 0:
-                        bus_data["angel"][2 - 1] = \
-                            500 + (gyro_data['roll1'] + gyro_data['roll2']) / 270 * 1000
-                    else:
-                        bus_data["angel"][2 - 1] = 500
-                if client_id == 2:
-                    bus_data["angel"][3 - 1] = \
-                        500 + gyro_data['roll2'] / 270 * 1000
-                if client_id == 3:
-                    bus_data["angel"][4 - 1] = \
-                        500 + gyro_data['yaw3'] / 270 * 1000
-                    if gyro_data['roll4'] > 0:
-                        bus_data["angel"][5 - 1] = \
-                            500 - (gyro_data['roll3'] + gyro_data['roll4']) / 270 * 1000
-                    else:
-                        bus_data['angel'][5 - 1] = 500
-                if client_id == 4:
-                    bus_data["angel"][6 - 1] = \
-                        500 - gyro_data['roll4'] / 270 * 1000
+                control_algorithm_n(client_id)
+
                 if time.time() - time_before > 1:
                     time_before = time.time()
                     gyro_data['fps' + str(client_id)] = fps
@@ -104,6 +122,7 @@ def bus_thread(bus_client, bus_addr):
         while True:
             servo_move(bus_client, bus_data['id'], bus_data['cmd'], bus_data['angel'], bus_data['time'])
             servo_pos(bus_client, [1, 2, 3, 4, 5, 6])
+            print("ok")
             print(bus_data_back['angel'])
             servo_record(bus_client)
             time.sleep(con_time / 1000)
