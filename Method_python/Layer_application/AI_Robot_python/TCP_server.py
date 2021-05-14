@@ -6,7 +6,7 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-"""这是test分支里面的python程序 第二遍 哈哈哈 """
+"""这是test分支里面的python程序"""
 """陀螺仪参数设置"""
 command_single_data = b'\xFF\xAA\x03\x0C\x00'
 command_setup_open = b'\xFF\xAA\x69\x88\xB5'
