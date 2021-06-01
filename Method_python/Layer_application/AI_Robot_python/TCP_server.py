@@ -6,29 +6,29 @@ import math
 
 """这是test分支里面的python程序"""
 """陀螺仪参数设置"""
-command_single_data = b'\xFF\xAA\x03\x0C\x00'
 command_setup_open = b'\xFF\xAA\x69\x88\xB5'
 command_setup_zero = b'\xFF\xAA\x01\x08\x00'
 command_setup_close = b'\xFF\xAA\x00\x00\x00'
 command_setup_speed_100Hz = b'\xFF\xAA\x03\x09\x00'
 command_setup_data_angel = b'\xFF\xAA\x02\x08\x00'
+command_setup_data_all = b'\xFF\xAA\x02\x0A\x00'
 """控制舵机参数"""
 con_time = 100  # ms
 N = 1
 """绘图参数"""
-axis_servo3_address = r"C:\Users\dingy\Desktop\Matlab\servo_data_3.txt"
-axis_servo6_address = r"C:\Users\dingy\Desktop\Matlab\servo_data_6.txt"
-axis_servo3_time_address = r"C:\Users\dingy\Desktop\Matlab\servo_time_3.txt"
-axis_servo6_time_address = r"C:\Users\dingy\Desktop\Matlab\servo_time_6.txt"
+gyro_address = r"C:\Users\dingy\Desktop\Matlab\Data_tmp"
+gyro_time_address = r"C:\Users\dingy\Desktop\Matlab\Data_tmp"
+servo_address = r"C:\Users\dingy\Desktop\Matlab\Data_tmp"
+servo_time_address = r"C:\Users\dingy\Desktop\Matlab\Data_tmp"
 """陀螺仪数据"""
-gyro_data = {'temper1': 0, 'roll1': 0, 'pitch1': 0, 'yaw1': 0, 'fps1': 0,
-             'temper2': 0, 'roll2': 0, 'pitch2': 0, 'yaw2': 0, 'fps2': 0,
-             'temper3': 0, 'roll3': 0, 'pitch3': 0, 'yaw3': 0, 'fps3': 0,
-             'temper4': 0, 'roll4': 0, 'pitch4': 0, 'yaw4': 0, 'fps4': 0}
-gyro_data_before = {'temper1': 0, 'roll1': 0, 'pitch1': 0, 'yaw1': 0, 'fps1': 0,
-                    'temper2': 0, 'roll2': 0, 'pitch2': 0, 'yaw2': 0, 'fps2': 0,
-                    'temper3': 0, 'roll3': 0, 'pitch3': 0, 'yaw3': 0, 'fps3': 0,
-                    'temper4': 0, 'roll4': 0, 'pitch4': 0, 'yaw4': 0, 'fps4': 0}
+gyro_data = {'temper1': 0, 'roll1': 0, 'pitch1': 0, 'yaw1': 0, 'ax1': 0, 'ay1': 0, 'az1': 0, 'fps1': 0,
+             'temper2': 0, 'roll2': 0, 'pitch2': 0, 'yaw2': 0, 'ax2': 0, 'ay2': 0, 'az2': 0, 'fps2': 0,
+             'temper3': 0, 'roll3': 0, 'pitch3': 0, 'yaw3': 0, 'ax3': 0, 'ay3': 0, 'az3': 0, 'fps3': 0,
+             'temper4': 0, 'roll4': 0, 'pitch4': 0, 'yaw4': 0, 'ax4': 0, 'ay4': 0, 'az4': 0, 'fps4': 0}
+gyro_data_before = {'temper1': 0, 'roll1': 0, 'pitch1': 0, 'yaw1': 0, 'ax1': 0, 'ay1': 0, 'az1': 0, 'fps1': 0,
+                    'temper2': 0, 'roll2': 0, 'pitch2': 0, 'yaw2': 0, 'ax2': 0, 'ay2': 0, 'az2': 0, 'fps2': 0,
+                    'temper3': 0, 'roll3': 0, 'pitch3': 0, 'yaw3': 0, 'ax3': 0, 'ay3': 0, 'az3': 0, 'fps3': 0,
+                    'temper4': 0, 'roll4': 0, 'pitch4': 0, 'yaw4': 0, 'ax4': 0, 'ay4': 0, 'az4': 0, 'fps4': 0}
 """总线舵机数据"""
 bus_data = {'id': [1, 2, 3, 4, 5, 6], 'angel': [500, 500, 500, 500, 500, 500],
             'time': con_time, 'cmd': 3}
@@ -46,7 +46,7 @@ def control_algorithm_n():
     if gyro_data['roll4'] - gyro_data_before['roll4'] > 0.1 and gravity == 0:
         servo_move(client_index['bus'], [1, 4], 3, [440, 440], 200)
         time.sleep(0.2)
-        servo_move(client_index['bus'], [2, 3, 5, 6], 3, [500, 500, 500, 500], 500)# 步距补偿
+        servo_move(client_index['bus'], [2, 3, 5, 6], 3, [500, 500, 500, 500], 500)  # 步距补偿
         time.sleep(0.5)
         gravity = 1
 
@@ -102,7 +102,7 @@ def gyro_thread(gyro_client, gyro_addr):
         time.sleep(0.1)
         gyro_client.send(command_setup_speed_100Hz)
         time.sleep(0.1)
-        gyro_client.send(command_setup_data_angel)
+        gyro_client.send(command_setup_data_all)
         time.sleep(0.1)
         gyro_client.send(command_setup_close)
         time.sleep(0.1)
@@ -116,6 +116,7 @@ def gyro_thread(gyro_client, gyro_addr):
         while True:
             try:
                 raw_data = gyro_client.recv(11)
+                print(raw_data.hex())
                 gyro_data_before['roll' + str(client_id)] = gyro_data['roll' + str(client_id)]
                 gyro_data_before['pitch' + str(client_id)] = gyro_data['roll' + str(client_id)]
                 gyro_data_before['yaw' + str(client_id)] = gyro_data['roll' + str(client_id)]
@@ -134,12 +135,40 @@ def gyro_thread(gyro_client, gyro_addr):
                     else:
                         fps = fps + 1
 
-                    with open(r"C:\Users\dingy\Desktop\Matlab\gyro_data_" + str(client_id)+".txt", "a") as f_gyro:
-                        f_gyro.write(str(gyro_data['roll' + str(client_id)]))
-                        f_gyro.write(" ")
-                    with open(r"C:\Users\dingy\Desktop\Matlab\gyro_time_" + str(client_id) + ".txt", "a") as f_time:
-                        f_time.write(str(time.time() - time_start))
-                        f_time.write(" ")
+                    with open(gyro_address + r"\gyro_roll" + str(client_id) + ".txt", "a") as f_gyro_roll:
+                        f_gyro_roll.write(str(gyro_data['roll' + str(client_id)]))
+                        f_gyro_roll.write(" ")
+                    with open(gyro_address + r"\gyro_pitch" + str(client_id) + ".txt","a") as f_gyro_pitch:
+                        f_gyro_pitch.write(str(gyro_data['pitch' + str(client_id)]))
+                        f_gyro_pitch.write(" ")
+                    with open(gyro_address + r"\gyro_yaw" + str(client_id) + ".txt", "a") as f_gyro_yaw:
+                        f_gyro_yaw.write(str(gyro_data['yaw' + str(client_id)]))
+                        f_gyro_yaw.write(" ")
+                    with open(gyro_time_address + r"\gyro_angel_time" + str(client_id) + ".txt",
+                              "a") as f_angel_time:
+                        f_angel_time.write(str(time.time() - time_start))
+                        f_angel_time.write(" ")
+
+                if raw_data[1] == 81:
+                    gyro_data['ax' + str(client_id)] = \
+                        struct.unpack('h', raw_data[2:4])[0] / 32768 * 16 * 9.8
+                    gyro_data['ay' + str(client_id)] = \
+                        struct.unpack('h', raw_data[4:6])[0] / 32768 * 16 * 9.8
+                    gyro_data['az' + str(client_id)] = \
+                        struct.unpack('h', raw_data[6:8])[0] / 32768 * 16 * 9.8
+
+                    with open(gyro_address + r"\gyro_ax" + str(client_id) + ".txt", "a") as f_gyro_ax:
+                        f_gyro_ax.write(str(gyro_data['ax' + str(client_id)]))
+                        f_gyro_ax.write(" ")
+                    with open(gyro_address + r"\gyro_ay" + str(client_id) + ".txt", "a") as f_gyro_yx:
+                        f_gyro_yx.write(str(gyro_data['ay' + str(client_id)]))
+                        f_gyro_yx.write(" ")
+                    with open(gyro_address + r"\gyro_az" + str(client_id) + ".txt", "a") as f_gyro_zx:
+                        f_gyro_zx.write(str(gyro_data['az' + str(client_id)]))
+                        f_gyro_zx.write(" ")
+                    with open(gyro_time_address + r"\gyro_a_time" + str(client_id) + ".txt", "a") as f_a_time:
+                        f_a_time.write(str(time.time() - time_start))
+                        f_a_time.write(" ")
             except BaseException:
                 pass
     return 1
@@ -161,17 +190,17 @@ def servo_record(bus_client):
     if client_status['bus']:
         servo_pos(bus_client, [3, 6])
         time.sleep(0.1)
-        with open(axis_servo3_address, "a") as f_servo3:
+        with open(servo_address + "/servo3.txt", "a") as f_servo3:
             f_servo3.write(str(bus_data_back['angel'][3 - 1]))
             f_servo3.write(" ")
-        with open(axis_servo3_time_address, "a") as f_servo3_time:
+        with open(servo_time_address + "/servo3_time.txt", "a") as f_servo3_time:
             f_servo3_time.write(str(time.time() - time_start))
             f_servo3_time.write(" ")
 
-        with open(axis_servo6_address, "a") as f_servo6:
+        with open(servo_address + "/servo6.txt", "a") as f_servo6:
             f_servo6.write(str(bus_data_back['angel'][6 - 1]))
             f_servo6.write(" ")
-        with open(axis_servo6_time_address, "a") as f_servo6_time:
+        with open(servo_time_address + "/servo6_time.txt", "a") as f_servo6_time:
             f_servo6_time.write(str(time.time() - time_start))
             f_servo6_time.write(" ")
     return
@@ -240,14 +269,6 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(('192.168.43.186', 8000))
 server.listen(5)
 time_start = time.time()
-file = open(r"C:\Users\dingy\Desktop\Matlab\gyro_data_1.txt", "w").close()
-file = open(r"C:\Users\dingy\Desktop\Matlab\gyro_data_4.txt", "w").close()
-file = open(r"C:\Users\dingy\Desktop\Matlab\gyro_time_1.txt", "w").close()
-file = open(r"C:\Users\dingy\Desktop\Matlab\gyro_time_4.txt", "w").close()
-file = open(r"C:\Users\dingy\Desktop\Matlab\servo_time_3.txt", "w").close()
-file = open(r"C:\Users\dingy\Desktop\Matlab\servo_time_6.txt", "w").close()
-file = open(r"C:\Users\dingy\Desktop\Matlab\servo_data_3.txt", "w").close()
-file = open(r"C:\Users\dingy\Desktop\Matlab\servo_data_6.txt", "w").close()
 print("服务器准备就绪,等待客户端上线..........")
 
 if __name__ == '__main__':
@@ -257,4 +278,3 @@ if __name__ == '__main__':
         gyro_app.start()
         servo_app = threading.Thread(target=bus_thread, args=(s_client, addr))
         servo_app.start()
-
