@@ -23,7 +23,7 @@ sys.path.insert(0, '.')
 from ppcommon import __version__ as VERSION
 sys.path.pop(0)
 if os.path.exists('ppcommon.pyc'): os.remove('ppcommon.pyc')
-os.chdir('..')
+os.chdir('../../..')
 
 
 LONG_DESCRIPTION = """

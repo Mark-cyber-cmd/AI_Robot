@@ -16,10 +16,10 @@ command_setup_data_all = b'\xFF\xAA\x02\x0A\x00'
 con_time = 100  # ms
 N = 1
 """绘图参数"""
-gyro_address = r"C:\Users\dingy\Desktop\Matlab\Data_tmp"
-gyro_time_address = r"C:\Users\dingy\Desktop\Matlab\Data_tmp"
-servo_address = r"C:\Users\dingy\Desktop\Matlab\Data_tmp"
-servo_time_address = r"C:\Users\dingy\Desktop\Matlab\Data_tmp"
+gyro_address = r".\Matlab\Data_tmp"
+gyro_time_address = r".\Matlab\Data_tmp"
+servo_address = r".\Matlab\Data_tmp"
+servo_time_address = r".\Matlab\Data_tmp"
 """陀螺仪数据"""
 gyro_data = {'temper1': 0, 'roll1': 0, 'pitch1': 0, 'yaw1': 0, 'ax1': 0, 'ay1': 0, 'az1': 0, 'fps1': 0,
              'temper2': 0, 'roll2': 0, 'pitch2': 0, 'yaw2': 0, 'ax2': 0, 'ay2': 0, 'az2': 0, 'fps2': 0,
