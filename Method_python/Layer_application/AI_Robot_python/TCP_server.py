@@ -3,6 +3,8 @@ import time
 import struct
 import threading
 import math
+import pygame
+from pygame.locals import *
 
 """这是test分支里面的python程序"""
 """陀螺仪参数设置"""
@@ -16,10 +18,8 @@ command_setup_data_all = b'\xFF\xAA\x02\x0A\x00'
 con_time = 100  # ms
 N = 1
 """绘图参数"""
-gyro_address = r".\Matlab\Data_tmp"
-gyro_time_address = r".\Matlab\Data_tmp"
-servo_address = r".\Matlab\Data_tmp"
-servo_time_address = r".\Matlab\Data_tmp"
+gyro_address = r".\Data\Data_tmp"
+servo_address = r".\Data\Data_tmp"
 """陀螺仪数据"""
 gyro_data = {'temper1': 0, 'roll1': 0, 'pitch1': 0, 'yaw1': 0, 'ax1': 0, 'ay1': 0, 'az1': 0, 'fps1': 0,
              'temper2': 0, 'roll2': 0, 'pitch2': 0, 'yaw2': 0, 'ax2': 0, 'ay2': 0, 'az2': 0, 'fps2': 0,
@@ -34,9 +34,29 @@ bus_data = {'id': [1, 2, 3, 4, 5, 6], 'angel': [500, 500, 500, 500, 500, 500],
             'time': con_time, 'cmd': 3}
 bus_data_back = {'id': [1, 2, 3, 4, 5, 6], 'angel': [500, 500, 500, 500, 500, 500]}
 gravity = 0
+gravity_flag = 0
 """TCP客户端连接管理"""
 client_index = {'bus': 0, 'gyro_1': 0, 'gyro_2': 0, 'gyro_3': 0, 'gyro_4': 0}
 client_status = {'bus': False, 'gyro_1': False, 'gyro_2': False, 'gyro_3': False, 'gyro_4': False}
+
+
+def key_scan():
+    global gravity_flag
+    # 初始化
+    pygame.init()
+    window = pygame.display.set_mode([960, 540])
+    while True:
+        events = pygame.event.get()
+        for event in events:
+            if event.type == KEYDOWN:
+                if str(event.key) == '100':  # 按 D 键（键码100）会立即退出当前动画显示程序
+                    # break # 这里用break不会起作用
+                    print('收到KEYDOWN按键：', str(event.key))  # str(event.key) 显示键码
+                    if gravity_flag:
+                        gravity_flag = 0
+                    else:
+                        gravity_flag = 1
+                    print("status: ", gravity_flag)
 
 
 def control_algorithm_n():
@@ -144,7 +164,7 @@ def gyro_thread(gyro_client, gyro_addr):
                     with open(gyro_address + r"\gyro_yaw" + str(client_id) + ".txt", "a") as f_gyro_yaw:
                         f_gyro_yaw.write(str(gyro_data['yaw' + str(client_id)]))
                         f_gyro_yaw.write(" ")
-                    with open(gyro_time_address + r"\gyro_angel_time" + str(client_id) + ".txt",
+                    with open(gyro_address + r"\gyro_angel_time" + str(client_id) + ".txt",
                               "a") as f_angel_time:
                         f_angel_time.write(str(time.time() - time_start))
                         f_angel_time.write(" ")
@@ -166,7 +186,7 @@ def gyro_thread(gyro_client, gyro_addr):
                     with open(gyro_address + r"\gyro_az" + str(client_id) + ".txt", "a") as f_gyro_zx:
                         f_gyro_zx.write(str(gyro_data['az' + str(client_id)]))
                         f_gyro_zx.write(" ")
-                    with open(gyro_time_address + r"\gyro_a_time" + str(client_id) + ".txt", "a") as f_a_time:
+                    with open(gyro_address + r"\gyro_a_time" + str(client_id) + ".txt", "a") as f_a_time:
                         f_a_time.write(str(time.time() - time_start))
                         f_a_time.write(" ")
             except BaseException:
@@ -183,6 +203,9 @@ def bus_thread(bus_client, bus_addr):
             control_algorithm_n()
             print("ID:4 ", int(gyro_data['roll4']), "ID:1", int(gyro_data['roll1']), "g:", gravity)
             servo_record(client_index['bus'])
+            with open(gyro_address + r"\human_status.txt", "a") as f_h:
+                f_h.write(str(gravity_flag))
+                f_h.write(" ")
     return
 
 
@@ -193,14 +216,14 @@ def servo_record(bus_client):
         with open(servo_address + "/servo3.txt", "a") as f_servo3:
             f_servo3.write(str(bus_data_back['angel'][3 - 1]))
             f_servo3.write(" ")
-        with open(servo_time_address + "/servo3_time.txt", "a") as f_servo3_time:
+        with open(servo_address + "/servo3_time.txt", "a") as f_servo3_time:
             f_servo3_time.write(str(time.time() - time_start))
             f_servo3_time.write(" ")
 
         with open(servo_address + "/servo6.txt", "a") as f_servo6:
             f_servo6.write(str(bus_data_back['angel'][6 - 1]))
             f_servo6.write(" ")
-        with open(servo_time_address + "/servo6_time.txt", "a") as f_servo6_time:
+        with open(servo_address + "/servo6_time.txt", "a") as f_servo6_time:
             f_servo6_time.write(str(time.time() - time_start))
             f_servo6_time.write(" ")
     return
@@ -272,6 +295,8 @@ time_start = time.time()
 print("服务器准备就绪,等待客户端上线..........")
 
 if __name__ == '__main__':
+    servo_app = threading.Thread(target=key_scan, args=())
+    servo_app.start()
     while True:
         s_client, addr = server.accept()  # 不阻塞
         gyro_app = threading.Thread(target=gyro_thread, args=(s_client, addr))
