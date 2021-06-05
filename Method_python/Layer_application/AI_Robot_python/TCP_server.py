@@ -52,11 +52,8 @@ def key_scan():
                 if str(event.key) == '100':  # 按 D 键（键码100）会立即退出当前动画显示程序
                     # break # 这里用break不会起作用
                     print('收到KEYDOWN按键：', str(event.key))  # str(event.key) 显示键码
-                    if gravity_flag:
-                        gravity_flag = 0
-                    else:
-                        gravity_flag = 1
-                    print("status: ", gravity_flag)
+                    gravity_flag = 1
+                    print("落脚！")
 
 
 def control_algorithm_n():

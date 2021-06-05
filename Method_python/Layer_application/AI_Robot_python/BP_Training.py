@@ -1,23 +1,10 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from scipy import interpolate
 import os
-Data_address = r"./Data/Data_base/zzm/大腿数据_4/"
-
-
-# 创建加载数据读取数据以及划分数据集的函数，返回数据特征集以及数据标签集
-def loaddataset(Data_address, Data):
-    dataset = []
-    labelset = []
-    for j in range(len(Data)):
-        fp_dataset = open(Data_address + Data[j])
-        for i in fp_dataset.readlines():
-            a = i.strip().split()
-            dataset.append([float(j) for j in a[:len(a)]])
-
-    fp_labelset = open(Data_address + Data[0])
-    for i in fp_labelset.readlines():
-        a = i.strip().split()
-        labelset.append([float(j) for j in a[:len(a)]])
-    return dataset, labelset
+Data_address = r"./Data/Data_base/zzm/大腿数据_1/"
+Data_address_r = r'./Data/Data_base/zzm/大腿数据_1/'
+Label_name = r"gyro_0_1.txt"
 
 
 def list_dir(file_dir):
@@ -37,6 +24,56 @@ def list_dir(file_dir):
             pass
     print('<><><><><><> listdir <><><><><><>\n')
     return file_name
+
+
+# 创建加载数据读取数据以及划分数据集的函数，返回数据特征集以及数据标签集
+def load_dataset(data_address, data_name, label_name):
+    dataset = []
+    labelset = []
+    for j in range(len(data_name)):
+        if data_name[j] != Label_name:
+            fp_dataset = open(data_address + data_name[j])
+            for i in fp_dataset.readlines():
+                a = i.strip().split()
+                dataset.append([float(j) for j in a[:len(a)]])
+
+    fp_labelset = open(data_address + label_name)
+    for i in fp_labelset.readlines():
+        a = i.strip().split()
+        labelset.append([int(j) for j in a[:len(a)]])
+
+    return dataset, labelset[0]
+
+
+def sort_dataset(dataset, labelset):
+    m_len = 0
+    m_i = []
+    pre_len = []
+    dataset = dataset + [labelset]
+    for i in range(len(dataset)):
+        if len(dataset[i]) > m_len:
+            m_len = len(dataset[i])
+            m_i = [i]
+        if len(dataset[i]) == m_len:
+            m_i.append(i)
+        pre_len.append(len(dataset[i]))
+
+    for i in range(len(dataset)):
+        if i not in m_i:
+            x = np.linspace(0, 1, pre_len[i])
+            x_new = np.linspace(0, 1, m_len)
+            f = interpolate.interp1d(x, dataset[i], kind="slinear")
+            new_dataset = f(x_new)
+            dataset[i] = new_dataset.tolist()
+    labelset = dataset[len(dataset) - 1:len(dataset)]
+    dataset = dataset[0:len(dataset) - 1]
+    dataset = np.array(dataset).T   # 转置
+    labelset = np.array(labelset).T
+    dataset_train = dataset[0:int(len(dataset) * 0.8)]
+    dataset_test = dataset[int(len(dataset) * 0.8):len(dataset)]
+    labelset_train = labelset[0:int(len(labelset) * 0.8)]
+    labelset_test = labelset[int(len(dataset) * 0.8):len(dataset)]
+    return dataset_train, dataset_test, labelset_train, labelset_test
 
 
 # x为输入层神经元个数，y为隐层神经元个数，z输出层神经元个数
@@ -118,14 +155,44 @@ def trainning(dataset, labelset, weight1, weight2, value1, value2):
     return weight1, weight2, value1, value2
 
 
+# 创建测试样本数据的函数
+def testing(dataset1, labelset1, weight1, weight2, value1, value2):
+    # 记录预测正确的个数
+    rightcount = 0
+    for i in range(len(dataset1)):
+        # 计算每一个样例的标签通过上面创建的神经网络模型后的预测值
+        inputset = np.mat(dataset1[i]).astype(np.float64)
+        outputset = np.mat(labelset1[i]).astype(np.float64)
+        output2 = sigmoid(np.dot(inputset, weight1) - value1)
+        output3 = sigmoid(np.dot(output2, weight2) - value2)
+
+        # 确定其预测标签
+        if output3 > 0.5:
+            flag = 1
+        else:
+            flag = 0
+        if labelset1[i] == flag:
+            rightcount += 1
+        # 输出预测结果
+        print("预测为%d   实际为%d" % (output3, labelset1[i]))
+    # 返回正确率
+    return rightcount / len(dataset1)
+
+
 if __name__ == "__main__":
-    Data = list_dir(Data_address)
-    dataset, labelset = loaddataset(Data_address, Data)
-    weight1, weight2, value1, value2 = parameter_initialization(len(dataset[0]), len(dataset[0]), 1)
-    print(len(dataset))
-
-
-
-
-
-
+    Data_name = list_dir(Data_address)
+    Dataset, Labelset = load_dataset(Data_address, Data_name, Label_name)
+    print(len(Dataset[0]), Dataset[0])
+    print(len(Dataset[1]), Dataset[1])
+    print(Labelset)
+    Dataset, Dataset_r, Labelset, Labelset_r = sort_dataset(Dataset, Labelset)
+    print(len(Dataset[0]), Dataset[0], Labelset[0])
+    print(len(Dataset[1]), Dataset[1], Labelset[1])
+    print(len(Dataset_r[0]), Dataset_r[0], Labelset_r[0])
+    print(len(Dataset_r[1]), Dataset_r[1], Labelset_r[1])
+    Weight1, Weight2, Value1, Value2 = parameter_initialization(2, 3, 1)
+    for i in range(1500):
+        print("Training times:", i)
+        Weight1, Weight2, Value1, Value2 = trainning(Dataset, Labelset, Weight1, Weight2, Value1, Value2)
+    # 对测试样本进行测试，并且得到正确率
+    print(testing(Dataset_r, Labelset_r, Weight1, Weight2, Value1, Value2))

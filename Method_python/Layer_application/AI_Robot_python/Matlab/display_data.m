@@ -1,17 +1,18 @@
 clear;
 clc;
 
+Data_address = "../Data/Data_base/zzm/大腿数据_3/";
 %主程序
-gyro_ax3 = importdata('.\Data_tmp\gyro_ax3.txt');
-gyro_ay3 = importdata('.\Data_tmp\gyro_ay3.txt');
-gyro_az3 = importdata('.\Data_tmp\gyro_az3.txt');
-gyro_roll3 = importdata('.\Data_tmp\gyro_roll3.txt');
-gyro_pitch3 = importdata('.\Data_tmp\gyro_pitch3.txt');
-gyro_yaw3 = importdata('.\Data_tmp\gyro_yaw3.txt');
-gyro_a_time3 = importdata('.\Data_tmp\gyro_a_time3.txt');
-gyro_angel_time3 = importdata('.\Data_tmp\gyro_angel_time3.txt');
+gyro_ax3 = importdata(Data_address + 'gyro_ax3.txt');
+gyro_ay3 = importdata(Data_address + 'gyro_ay3.txt');
+gyro_az3 = importdata(Data_address + 'gyro_az3.txt');
+gyro_roll3 = importdata(Data_address + 'gyro_roll3.txt');
+gyro_pitch3 = importdata(Data_address + 'gyro_pitch3.txt');
+gyro_yaw3 = importdata(Data_address + 'gyro_yaw3.txt');
+gyro_a_time3 = importdata(Data_address + 'gyro_a_time3.txt');
+gyro_angel_time3 = importdata(Data_address + 'gyro_angel_time3.txt');
 figure(1);
-plot(gyro_a_time3 , gyro_ax3,"-r*");
+plot(gyro_a_time3 , gyro_ax3(:,4665),"-r*");
 hold on;
 plot(gyro_angel_time3 , gyro_roll3,"-b*");
 title("AX3");
