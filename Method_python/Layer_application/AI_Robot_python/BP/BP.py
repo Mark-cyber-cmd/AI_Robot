@@ -59,6 +59,7 @@ def trainning(dataset, labelset, weight1, weight2, value1, value2):
     # x为步长
     x = 0.01  # 学习率
     for i in range(len(dataset)):  # 依次读取数据特征集中的元素，一个元素即为一个样本所含有的所有特征数据
+
         # 输入数据
         # （1,21）
         inputset = np.mat(dataset[i]).astype(np.float64)  # 每次输入一个样本，将样本的特征转化为矩阵，以浮点数显示
@@ -140,12 +141,12 @@ def main():
     # 得到初始化的待估参数的值
     weight1, weight2, value1, value2 = parameter_initialization(len(dataset[0]), len(dataset[0]), 1)
     # 迭代次数为1500次，迭代次数一般越大准确率越高，但是其运行时间也会增加
-    for i in range(1500):
+    for i in range(2):
         # 获得对所有训练样本训练迭代一次后的待估参数
         weight1, weight2, value1, value2 = trainning(dataset, labelset, weight1, weight2, value1, value2)
-    # 对测试样本进行测试，并且得到正确率
-    rate = testing(dataset1, labelset1, weight1, weight2, value1, value2)
-    print("正确率为%f" % (rate))
+    # # 对测试样本进行测试，并且得到正确率
+    # rate = testing(dataset1, labelset1, weight1, weight2, value1, value2)
+    # print("正确率为%f" % (rate))
 
 
 if __name__ == '__main__':

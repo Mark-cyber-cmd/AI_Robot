@@ -1,10 +1,12 @@
 import socket
+import os
+import shutil
 import time
 import struct
 import threading
 import math
-import pygame
-from pygame.locals import *
+import keyboard
+import numpy as np
 
 """这是test分支里面的python程序"""
 """陀螺仪参数设置"""
@@ -34,29 +36,42 @@ bus_data = {'id': [1, 2, 3, 4, 5, 6], 'angel': [500, 500, 500, 500, 500, 500],
             'time': con_time, 'cmd': 3}
 bus_data_back = {'id': [1, 2, 3, 4, 5, 6], 'angel': [500, 500, 500, 500, 500, 500]}
 gravity = 0
-gravity_flag = 0
 """TCP客户端连接管理"""
 client_index = {'bus': 0, 'gyro_1': 0, 'gyro_2': 0, 'gyro_3': 0, 'gyro_4': 0}
 client_status = {'bus': False, 'gyro_1': False, 'gyro_2': False, 'gyro_3': False, 'gyro_4': False}
+"""神经网络控制参数"""
+w1 = np.loadtxt("./BP_net/Net1/w1.txt", delimiter=" ", dtype="float")
+w2 = np.loadtxt("./BP_net/Net1/w2.txt", delimiter=" ", dtype="float")
+b1 = np.loadtxt("./BP_net/Net1/b1.txt", delimiter=" ", dtype="float")
+b2 = np.loadtxt("./BP_net/Net1/b2.txt", delimiter=" ", dtype="float")
+b1 = np.array([b1.tolist()]).T
 
 
-def key_scan():
-    global gravity_flag
-    # 初始化
-    pygame.init()
-    window = pygame.display.set_mode([960, 540])
-    while True:
-        events = pygame.event.get()
-        for event in events:
-            if event.type == KEYDOWN:
-                if str(event.key) == '100':  # 按 D 键（键码100）会立即退出当前动画显示程序
-                    # break # 这里用break不会起作用
-                    print('收到KEYDOWN按键：', str(event.key))  # str(event.key) 显示键码
-                    gravity_flag = 1
-                    print("落脚！")
+# 创建激活函数sigmoid
+def sigmoid(z):
+    return 2 / (1 + np.exp(-2 * z)) - 1
 
 
-def control_algorithm_n():
+def settle_down(data):
+    step1 = np.dot(w1, data)
+    step2 = sigmoid(step1 - b1)
+    step3 = np.dot(w2, step2)
+    step4 = sigmoid(step3 - b2)
+    output = np.heaviside(step4, 1)
+    return output
+
+
+def key_scan(flag):
+    try:  # used try so that if user pressed other than the given key error will not be shown
+        if keyboard.is_pressed('space'):  # if key 'q' is pressed
+            print('记录落脚一次')
+            flag = 1
+    except BaseException:
+        pass  # if user pressed a key other than the given key the loop will break
+    return flag
+
+
+def control_algorithm():
     bus_data_s = [500, 500, 500, 500]
     global gyro_data_before, gravity
 
@@ -79,10 +94,10 @@ def control_algorithm_n():
         servo_move(client_index['bus'], [2, 3, 5, 6], 3, bus_data_s, con_time)
         time.sleep(con_time / 1000)
 
-        if gyro_data['roll4'] + 8 * gyro_data['roll1'] < 5:
-            servo_move(client_index['bus'], [1, 4], 3, [500, 500], 200)
-            time.sleep(0.2)
-            gravity = 0
+        # if gyro_data['roll4'] + 8 * gyro_data['roll1'] < 5:
+        #     servo_move(client_index['bus'], [1, 4], 3, [500, 500], 200)
+        #     time.sleep(0.2)
+        #     gravity = 0
 
     if gyro_data['roll1'] - gyro_data_before['roll1'] > 0.1 and gravity == 0:
         servo_move(client_index['bus'], [1, 4], 3, [560, 560], 200)
@@ -90,6 +105,16 @@ def control_algorithm_n():
         servo_move(client_index['bus'], [2, 3, 5, 6], 3, [500, 500, 500, 500], 500)
         time.sleep(0.5)
         gravity = -1
+
+    data_set = [gyro_data['ax1'], gyro_data['ay1'], gyro_data['az1'], gyro_data['ax4'],
+                gyro_data['ay4'], gyro_data['az4'], gyro_data['roll1'], gyro_data['pitch1'],
+                gyro_data['yaw1'], gyro_data['roll4'], gyro_data['pitch4'], gyro_data['yaw4']]
+    data_set = (data_set - min(data_set)) / (max(data_set) - min(data_set)) * 2 - 1
+    data_set = np.array(data_set)
+    if settle_down(data_set):
+        servo_move(client_index['bus'], [1, 4], 3, [500, 500], 200)
+        time.sleep(0.2)
+        gravity = 0
 
     if abs(gyro_data['roll4'] + gyro_data['roll1']) > 1 and gravity == -1:
         bus_data_s[0] = \
@@ -103,14 +128,15 @@ def control_algorithm_n():
         servo_move(client_index['bus'], [2, 3, 5, 6], 3, bus_data_s, con_time)
         time.sleep(con_time / 1000)
 
-        if gyro_data['roll1'] + 8 * gyro_data['roll4'] < 5:
-            servo_move(client_index['bus'], [1, 4], 3, [500, 500], 200)
-            time.sleep(0.2)
-            gravity = 0
+        # if gyro_data['roll1'] + 8 * gyro_data['roll4'] < 5:
+        #     servo_move(client_index['bus'], [1, 4], 3, [500, 500], 200)
+        #     time.sleep(0.2)
+        #     gravity = 0
     return
 
 
 def gyro_thread(gyro_client, gyro_addr):
+    gravity_flag = 0
     if gyro_addr[0] == '192.168.43.157' or gyro_addr[0] == '192.168.43.52' \
             or gyro_addr[0] == '192.168.43.28' or gyro_addr[0] == '192.168.43.38':
         gyro_client.send(command_setup_open)
@@ -133,10 +159,15 @@ def gyro_thread(gyro_client, gyro_addr):
         while True:
             try:
                 raw_data = gyro_client.recv(11)
-                print(raw_data.hex())
                 gyro_data_before['roll' + str(client_id)] = gyro_data['roll' + str(client_id)]
                 gyro_data_before['pitch' + str(client_id)] = gyro_data['roll' + str(client_id)]
                 gyro_data_before['yaw' + str(client_id)] = gyro_data['roll' + str(client_id)]
+                gravity_flag = key_scan(gravity_flag)
+                if client_id == 1:
+                    with open(gyro_address + r"\human_status.txt", "a") as f_hs:
+                        f_hs.write(str(gravity_flag))
+                        f_hs.write(" ")
+                        gravity_flag = 0
                 if raw_data[1] == 83:
                     gyro_data['roll' + str(client_id)] = \
                         struct.unpack('h', raw_data[2:4])[0] / 32768 * 180
@@ -148,6 +179,7 @@ def gyro_thread(gyro_client, gyro_addr):
                     if time.time() - time_before > 1:
                         time_before = time.time()
                         gyro_data['fps' + str(client_id)] = fps
+                        print('fps' + str(client_id) + ": ", fps)
                         fps = 0
                     else:
                         fps = fps + 1
@@ -155,7 +187,7 @@ def gyro_thread(gyro_client, gyro_addr):
                     with open(gyro_address + r"\gyro_roll" + str(client_id) + ".txt", "a") as f_gyro_roll:
                         f_gyro_roll.write(str(gyro_data['roll' + str(client_id)]))
                         f_gyro_roll.write(" ")
-                    with open(gyro_address + r"\gyro_pitch" + str(client_id) + ".txt","a") as f_gyro_pitch:
+                    with open(gyro_address + r"\gyro_pitch" + str(client_id) + ".txt", "a") as f_gyro_pitch:
                         f_gyro_pitch.write(str(gyro_data['pitch' + str(client_id)]))
                         f_gyro_pitch.write(" ")
                     with open(gyro_address + r"\gyro_yaw" + str(client_id) + ".txt", "a") as f_gyro_yaw:
@@ -187,7 +219,7 @@ def gyro_thread(gyro_client, gyro_addr):
                         f_a_time.write(str(time.time() - time_start))
                         f_a_time.write(" ")
             except BaseException:
-                pass
+                break
     return 1
 
 
@@ -197,12 +229,9 @@ def bus_thread(bus_client, bus_addr):
         client_status['bus'] = True
         print("舵机总线控制器成功连接")
         while True:
-            control_algorithm_n()
+            control_algorithm()
             print("ID:4 ", int(gyro_data['roll4']), "ID:1", int(gyro_data['roll1']), "g:", gravity)
-            servo_record(client_index['bus'])
-            with open(gyro_address + r"\human_status.txt", "a") as f_h:
-                f_h.write(str(gravity_flag))
-                f_h.write(" ")
+            # servo_record(client_index['bus'])
     return
 
 
@@ -283,17 +312,28 @@ def math_test():
     return
 
 
-"""           建立一个服务端            """
+def setdir(filepath):
+    '''
+    如果文件夹不存在就创建，如果文件存在就清空！
+    :param filepath:需要创建的文件夹路径
+    :return:
+    '''
+    if not os.path.exists(filepath):
+        os.mkdir(filepath)
+    else:
+        shutil.rmtree(filepath)
+        os.mkdir(filepath)
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(('192.168.43.186', 8000))
-server.listen(5)
-time_start = time.time()
-print("服务器准备就绪,等待客户端上线..........")
 
 if __name__ == '__main__':
-    servo_app = threading.Thread(target=key_scan, args=())
-    servo_app.start()
+    """           建立一个服务端            """
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind(('192.168.43.186', 8000))
+    server.listen(5)
+    time_start = time.time()
+    print("服务器准备就绪,等待客户端上线..........")
+    """     清空临时数据文件夹 开启按键检测  """
+    setdir("./Data/Data_tmp")
     while True:
         s_client, addr = server.accept()  # 不阻塞
         gyro_app = threading.Thread(target=gyro_thread, args=(s_client, addr))

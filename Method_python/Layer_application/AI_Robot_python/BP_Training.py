@@ -1,10 +1,10 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy import interpolate
 import os
+
 Data_address = r"./Data/Data_base/zzm/大腿数据_1/"
 Data_address_r = r'./Data/Data_base/zzm/大腿数据_1/'
-Label_name = r"gyro_0_1.txt"
+Label_name = r"human_status.txt"
 
 
 def list_dir(file_dir):
@@ -65,10 +65,11 @@ def sort_dataset(dataset, labelset):
             f = interpolate.interp1d(x, dataset[i], kind="slinear")
             new_dataset = f(x_new)
             dataset[i] = new_dataset.tolist()
-    labelset = dataset[len(dataset) - 1:len(dataset)]
+    labelset = dataset[len(dataset) - 1:len(dataset)]  # 标签数据分离
     dataset = dataset[0:len(dataset) - 1]
-    dataset = np.array(dataset).T   # 转置
-    labelset = np.array(labelset).T
+    dataset = np.array(dataset)
+    dataset = ((dataset - dataset.min()) / (dataset.max() - dataset.min()) * 5).T.tolist()  # 归一化[-5, 5]
+    labelset = np.array(labelset).T.tolist()
     dataset_train = dataset[0:int(len(dataset) * 0.8)]
     dataset_test = dataset[int(len(dataset) * 0.8):len(dataset)]
     labelset_train = labelset[0:int(len(labelset) * 0.8)]
@@ -159,6 +160,7 @@ def trainning(dataset, labelset, weight1, weight2, value1, value2):
 def testing(dataset1, labelset1, weight1, weight2, value1, value2):
     # 记录预测正确的个数
     rightcount = 0
+    lens_dataset = 0
     for i in range(len(dataset1)):
         # 计算每一个样例的标签通过上面创建的神经网络模型后的预测值
         inputset = np.mat(dataset1[i]).astype(np.float64)
@@ -171,27 +173,25 @@ def testing(dataset1, labelset1, weight1, weight2, value1, value2):
             flag = 1
         else:
             flag = 0
-        if labelset1[i] == flag:
+        if flag == labelset1[i][0]:
             rightcount += 1
+        lens_dataset = lens_dataset + 1
+        print("预测为%d   实际为%d" % (flag, labelset1[i][0]))
         # 输出预测结果
-        print("预测为%d   实际为%d" % (output3, labelset1[i]))
     # 返回正确率
-    return rightcount / len(dataset1)
+    print("正确：", rightcount, "实际：", lens_dataset)
+    return rightcount / lens_dataset
 
 
 if __name__ == "__main__":
     Data_name = list_dir(Data_address)
     Dataset, Labelset = load_dataset(Data_address, Data_name, Label_name)
-    print(len(Dataset[0]), Dataset[0])
-    print(len(Dataset[1]), Dataset[1])
-    print(Labelset)
     Dataset, Dataset_r, Labelset, Labelset_r = sort_dataset(Dataset, Labelset)
     print(len(Dataset[0]), Dataset[0], Labelset[0])
-    print(len(Dataset[1]), Dataset[1], Labelset[1])
     print(len(Dataset_r[0]), Dataset_r[0], Labelset_r[0])
-    print(len(Dataset_r[1]), Dataset_r[1], Labelset_r[1])
+    print(Labelset_r)
     Weight1, Weight2, Value1, Value2 = parameter_initialization(2, 3, 1)
-    for i in range(1500):
+    for i in range(1):
         print("Training times:", i)
         Weight1, Weight2, Value1, Value2 = trainning(Dataset, Labelset, Weight1, Weight2, Value1, Value2)
     # 对测试样本进行测试，并且得到正确率
