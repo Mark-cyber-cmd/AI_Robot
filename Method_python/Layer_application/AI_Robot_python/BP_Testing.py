@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-Data_address = r"./Data/Data_base/zzm/大腿数据_4/"
+Data_address = r"./Data/Data_base/zzm/大腿数据_6/"
 Label_name = r"human_status.txt"
 
 
@@ -28,21 +28,21 @@ def standard_data(data_set):
     axis_x_vals = np.linspace(0, 1, 2319)
     axis_x = np.linspace(0, 1, len(data_set))
     data_set = np.interp(axis_x_vals, axis_x, data_set)
-    output = (data_set - min(data_set)) / (max(data_set) - min(data_set)) * 2 - 1
-    return output.tolist()
+    # output = (data_set - min(data_set)) / (max(data_set) - min(data_set)) * 2 - 1
+    return data_set.tolist()
 
 
-gyro_ax2 = standard_data(load_dataset(Data_address + "gyro_ax2.txt")[0])
+gyro_ax2 = standard_data(load_dataset(Data_address + "gyro_ax1.txt")[0])
 gyro_ax4 = standard_data(load_dataset(Data_address + "gyro_ax4.txt")[0])
-gyro_ay2 = standard_data(load_dataset(Data_address + "gyro_ay2.txt")[0])
+gyro_ay2 = standard_data(load_dataset(Data_address + "gyro_ay1.txt")[0])
 gyro_ay4 = standard_data(load_dataset(Data_address + "gyro_ay4.txt")[0])
-gyro_az2 = standard_data(load_dataset(Data_address + "gyro_az2.txt")[0])
-gyro_az4 = standard_data(load_dataset(Data_address + "gyro_az4.txt")[0])
-gyro_pitch2 = standard_data(load_dataset(Data_address + "gyro_pitch2.txt")[0])
+gyro_az2 = standard_data(load_dataset(Data_address + "gyro_az1.txt")[0])
+gyro_az4 = standard_data(load_dataset(Data_address + "gyro_az1.txt")[0])
+gyro_pitch2 = standard_data(load_dataset(Data_address + "gyro_pitch1.txt")[0])
 gyro_pitch4 = standard_data(load_dataset(Data_address + "gyro_pitch4.txt")[0])
-gyro_roll2 = standard_data(load_dataset(Data_address + "gyro_roll2.txt")[0])
+gyro_roll2 = standard_data(load_dataset(Data_address + "gyro_roll1.txt")[0])
 gyro_roll4 = standard_data(load_dataset(Data_address + "gyro_roll4.txt")[0])
-gyro_yaw2 = standard_data(load_dataset(Data_address + "gyro_yaw2.txt")[0])
+gyro_yaw2 = standard_data(load_dataset(Data_address + "gyro_yaw1.txt")[0])
 gyro_yaw4 = standard_data(load_dataset(Data_address + "gyro_yaw4.txt")[0])
 Label_set = standard_data(load_dataset(Data_address + "human_status.txt")[0])
 Data_set = [gyro_ax2, gyro_ay2, gyro_az2, gyro_ax4, gyro_ay4, gyro_az4, gyro_pitch2,
@@ -50,10 +50,11 @@ Data_set = [gyro_ax2, gyro_ay2, gyro_az2, gyro_ax4, gyro_ay4, gyro_az4, gyro_pit
 
 Input = np.array(Data_set)
 
-w1 = np.loadtxt("./BP_net/Net2/w1.txt", delimiter=" ", dtype="float")
-w2 = np.loadtxt("./BP_net/Net2/w2.txt", delimiter=" ", dtype="float")
-b1 = np.loadtxt("./BP_net/Net2/b1.txt", delimiter=" ", dtype="float")
-b2 = np.loadtxt("./BP_net/Net2/b2.txt", delimiter=" ", dtype="float")
+
+w1 = np.loadtxt("./BP_net/Net1/w1.txt", delimiter=" ", dtype="float")
+w2 = np.loadtxt("./BP_net/Net1/w2.txt", delimiter=" ", dtype="float")
+b1 = np.loadtxt("./BP_net/Net1/b1.txt", delimiter=" ", dtype="float")
+b2 = np.loadtxt("./BP_net/Net1/b2.txt", delimiter=" ", dtype="float")
 
 b1 = np.array([b1.tolist()]).T
 step1 = np.dot(w1, Input)

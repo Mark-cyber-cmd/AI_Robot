@@ -40,10 +40,10 @@ gravity = 0
 client_index = {'bus': 0, 'gyro_1': 0, 'gyro_2': 0, 'gyro_3': 0, 'gyro_4': 0}
 client_status = {'bus': False, 'gyro_1': False, 'gyro_2': False, 'gyro_3': False, 'gyro_4': False}
 """神经网络控制参数"""
-w1 = np.loadtxt("./BP_net/Net1/w1.txt", delimiter=" ", dtype="float")
-w2 = np.loadtxt("./BP_net/Net1/w2.txt", delimiter=" ", dtype="float")
-b1 = np.loadtxt("./BP_net/Net1/b1.txt", delimiter=" ", dtype="float")
-b2 = np.loadtxt("./BP_net/Net1/b2.txt", delimiter=" ", dtype="float")
+w1 = np.loadtxt("./BP_net/Net6/w1.txt", delimiter=" ", dtype="float")
+w2 = np.loadtxt("./BP_net/Net6/w2.txt", delimiter=" ", dtype="float")
+b1 = np.loadtxt("./BP_net/Net6/b1.txt", delimiter=" ", dtype="float")
+b2 = np.loadtxt("./BP_net/Net6/b2.txt", delimiter=" ", dtype="float")
 b1 = np.array([b1.tolist()]).T
 
 
@@ -57,7 +57,7 @@ def settle_down(data):
     step2 = sigmoid(step1 - b1)
     step3 = np.dot(w2, step2)
     step4 = sigmoid(step3 - b2)
-    output = np.heaviside(step4, 1)
+    output = np.heaviside(step4 - 0.5, 1)
     return output
 
 
@@ -94,10 +94,10 @@ def control_algorithm():
         servo_move(client_index['bus'], [2, 3, 5, 6], 3, bus_data_s, con_time)
         time.sleep(con_time / 1000)
 
-        # if gyro_data['roll4'] + 8 * gyro_data['roll1'] < 5:
-        #     servo_move(client_index['bus'], [1, 4], 3, [500, 500], 200)
-        #     time.sleep(0.2)
-        #     gravity = 0
+        if gyro_data['roll4'] + 8 * gyro_data['roll1'] < 5:
+            servo_move(client_index['bus'], [1, 4], 3, [500, 500], 200)
+            time.sleep(0.2)
+            gravity = 0
 
     if gyro_data['roll1'] - gyro_data_before['roll1'] > 0.1 and gravity == 0:
         servo_move(client_index['bus'], [1, 4], 3, [560, 560], 200)
@@ -106,15 +106,14 @@ def control_algorithm():
         time.sleep(0.5)
         gravity = -1
 
-    data_set = [gyro_data['ax1'], gyro_data['ay1'], gyro_data['az1'], gyro_data['ax4'],
-                gyro_data['ay4'], gyro_data['az4'], gyro_data['roll1'], gyro_data['pitch1'],
-                gyro_data['yaw1'], gyro_data['roll4'], gyro_data['pitch4'], gyro_data['yaw4']]
-    data_set = (data_set - min(data_set)) / (max(data_set) - min(data_set)) * 2 - 1
-    data_set = np.array(data_set)
-    if settle_down(data_set):
-        servo_move(client_index['bus'], [1, 4], 3, [500, 500], 200)
-        time.sleep(0.2)
-        gravity = 0
+    # data_set = [[gyro_data['ax1'], gyro_data['ay1'], gyro_data['az1'], gyro_data['ax4'],
+    #             gyro_data['ay4'], gyro_data['az4'], gyro_data['roll1'], gyro_data['pitch1'],
+    #             gyro_data['yaw1'], gyro_data['roll4'], gyro_data['pitch4'], gyro_data['yaw4']]]
+    # data_set = np.array(data_set).T
+    # if settle_down(data_set):
+    #     servo_move(client_index['bus'], [1, 4], 3, [500, 500], 200)
+    #     time.sleep(0.2)
+    #     gravity = 0
 
     if abs(gyro_data['roll4'] + gyro_data['roll1']) > 1 and gravity == -1:
         bus_data_s[0] = \
@@ -128,10 +127,10 @@ def control_algorithm():
         servo_move(client_index['bus'], [2, 3, 5, 6], 3, bus_data_s, con_time)
         time.sleep(con_time / 1000)
 
-        # if gyro_data['roll1'] + 8 * gyro_data['roll4'] < 5:
-        #     servo_move(client_index['bus'], [1, 4], 3, [500, 500], 200)
-        #     time.sleep(0.2)
-        #     gravity = 0
+        if gyro_data['roll1'] + 8 * gyro_data['roll4'] < 5:
+            servo_move(client_index['bus'], [1, 4], 3, [500, 500], 200)
+            time.sleep(0.2)
+            gravity = 0
     return
 
 
@@ -228,6 +227,9 @@ def bus_thread(bus_client, bus_addr):
         client_index['bus'] = bus_client
         client_status['bus'] = True
         print("舵机总线控制器成功连接")
+        # while True:
+        #     print(client_status['gyro_1'] is True and client_status['gyro_4'] is True)
+        time.sleep(5)
         while True:
             control_algorithm()
             print("ID:4 ", int(gyro_data['roll4']), "ID:1", int(gyro_data['roll1']), "g:", gravity)
