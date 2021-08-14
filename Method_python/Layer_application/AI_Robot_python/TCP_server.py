@@ -8,7 +8,7 @@ import math
 import keyboard
 import numpy as np
 
-"""这是test分支里面的python程序"""
+"""这是test分支里面的python程序 """
 """陀螺仪参数设置"""
 command_setup_open = b'\xFF\xAA\x69\x88\xB5'
 command_setup_zero = b'\xFF\xAA\x01\x08\x00'
