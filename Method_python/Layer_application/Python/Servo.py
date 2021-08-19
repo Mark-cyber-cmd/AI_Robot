@@ -2,81 +2,17 @@ import Gyro as gyro
 import Control as control
 import time
 import struct
-"""控制舵机参数"""
-time_start = 0
-con_time = 100  # ms
-N = 1
+
+
 """总线舵机数据"""
 bus_data = {'id': [1, 2, 3, 4, 5, 6], 'angel': [500, 500, 500, 500, 500, 500],
-            'time': con_time, 'cmd': 3}
+            'time': control.con_time, 'cmd': 3}
 bus_data_back = {'id': [1, 2, 3, 4, 5, 6], 'angel': [500, 500, 500, 500, 500, 500]}
 gravity = 0
+time_start = 0
 """绘图参数"""
 gyro_address = r".\Data\Data_tmp"
 servo_address = r".\Data\Data_tmp"
-
-
-def control_algorithm():
-    bus_data_s = [500, 500, 500, 500]
-    global gravity
-
-    if gyro.gyro_data['roll4'] - gyro.gyro_data_before['roll4'] > 0.1 and gravity == 0:
-        servo_move(control.client_index['bus'], [1, 4], 3, [440, 440], 200)
-        time.sleep(0.2)
-        servo_move(control.client_index['bus'], [2, 3, 5, 6], 3, [500, 500, 500, 500], 500)  # 步距补偿
-        time.sleep(0.5)
-        gravity = 1
-
-    if abs(gyro.gyro_data['roll4'] + gyro.gyro_data['roll1']) > 1 and gravity == 1:
-        bus_data_s[0] = \
-            500 + gyro.gyro_data['roll4'] / 270 * 1000
-        bus_data_s[1] = \
-            500 + gyro.gyro_data['roll4'] / 270 * 1000
-        bus_data_s[2] = \
-            500 + gyro.gyro_data['roll4'] / 270 * 1000
-        bus_data_s[3] = \
-            500 + gyro.gyro_data['roll4'] / 270 * 1000
-        servo_move(control.client_index['bus'], [2, 3, 5, 6], 3, bus_data_s, con_time)
-        time.sleep(con_time / 1000)
-
-        if gyro.gyro_data['roll4'] + 8 * gyro.gyro_data['roll1'] < 5:
-            servo_move(control.client_index['bus'], [1, 4], 3, [500, 500], 200)
-            time.sleep(0.2)
-            gravity = 0
-
-    if gyro.gyro_data['roll1'] - gyro.gyro_data_before['roll1'] > 0.1 and gravity == 0:
-        servo_move(control.client_index['bus'], [1, 4], 3, [560, 560], 200)
-        time.sleep(0.2)
-        servo_move(control.client_index['bus'], [2, 3, 5, 6], 3, [500, 500, 500, 500], 500)
-        time.sleep(0.5)
-        gravity = -1
-
-    # data_set = [[gyro_data['ax1'], gyro_data['ay1'], gyro_data['az1'], gyro_data['ax4'],
-    #             gyro_data['ay4'], gyro_data['az4'], gyro_data['roll1'], gyro_data['pitch1'],
-    #             gyro_data['yaw1'], gyro_data['roll4'], gyro_data['pitch4'], gyro_data['yaw4']]]
-    # data_set = np.array(data_set).T
-    # if settle_down(data_set):
-    #     servo_move(client_index['bus'], [1, 4], 3, [500, 500], 200)
-    #     time.sleep(0.2)
-    #     gravity = 0
-
-    if abs(gyro.gyro_data['roll4'] + gyro.gyro_data['roll1']) > 1 and gravity == -1:
-        bus_data_s[0] = \
-            500 - gyro.gyro_data['roll1'] / 270 * 1000
-        bus_data_s[1] = \
-            500 - gyro.gyro_data['roll1'] / 270 * 1000
-        bus_data_s[2] = \
-            500 - gyro.gyro_data['roll1'] / 270 * 1000
-        bus_data_s[3] = \
-            500 - gyro.gyro_data['roll1'] / 270 * 1000
-        servo_move(control.client_index['bus'], [2, 3, 5, 6], 3, bus_data_s, con_time)
-        time.sleep(con_time / 1000)
-
-        if gyro.gyro_data['roll1'] + 8 * gyro.gyro_data['roll4'] < 5:
-            servo_move(control.client_index['bus'], [1, 4], 3, [500, 500], 200)
-            time.sleep(0.2)
-            gravity = 0
-    return
 
 
 def bus_thread(bus_client, bus_addr):
@@ -88,7 +24,7 @@ def bus_thread(bus_client, bus_addr):
         time.sleep(5)
         time_start = time.time()
         while True:
-            control_algorithm()
+            control.control_algorithm()
             print("ID:4 ", int(gyro.gyro_data['roll4']), "ID:1", int(gyro.gyro_data['roll1']), "g:", gravity)
     return
 
