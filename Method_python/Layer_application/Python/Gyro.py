@@ -3,6 +3,7 @@ import math
 import struct
 import time
 
+
 class Gyro:
     """TODO 所有陀螺仪的基类"""
 
@@ -20,6 +21,7 @@ class Gyro:
 
     """预设的WIFI白名单"""
     white_list = ['192.168.43.157', '192.168.43.52', '192.168.43.28', '192.168.43.38']
+
     def __init__(self, client, addr):
         self.name = 0
         self.client = client
@@ -51,11 +53,19 @@ class Gyro:
         time.sleep(0.1)
 
     def refresh(self, raw_data):
-        if raw_data[1] == 83:
-            self.roll = struct.unpack('h', raw_data[2:4])[0] / 32768 * 180
-            self.pitch = struct.unpack('h', raw_data[4:6])[0] / 32768 * 180
-            self.yaw = struct.unpack('h', raw_data[6:8])[0] / 32768 * 180
-            self.time_angel = time.time()
+        try:
+            if raw_data[1] == 83:
+                self.roll = struct.unpack('h', raw_data[2:4])[0] / 32768 * 180
+                self.pitch = struct.unpack('h', raw_data[4:6])[0] / 32768 * 180
+                self.yaw = struct.unpack('h', raw_data[6:8])[0] / 32768 * 180
+                self.time_angel = time.time()
+            if raw_data[1] == 81:
+                self.ax = struct.unpack('h', raw_data[2:4])[0] / 32768 * 16 * 9.8
+                self.ay = struct.unpack('h', raw_data[4:6])[0] / 32768 * 16 * 9.8
+                self.az = struct.unpack('h', raw_data[6:8])[0] / 32768 * 16 * 9.8
+                self.time_acc = time.time()
+        except BaseException:
+            pass
 
     def fps(self):
         if (time.time() - self.time_start) % 1 == 0:
@@ -109,48 +119,6 @@ class Gyro:
             print("陀螺仪ID:", self.name, '成功连接并校准')
             while True:
                 raw_data = self.client.recv(11)
-                if raw_data[1] == 83:
-
-                if raw_data[1] == 81:
-
-    def key_scan(self, flag):
-        try:  # used try so that if user pressed other than the given key error will not be shown
-            if keyboard.is_pressed('space'):  # if key 'space' is pressed
-                print('记录落脚一次')
-                flag = 1
-        except BaseException:
-            pass  # if user pressed a key other than the given key the loop will break
-        return flag
-
-
-def math_test():
-    print("1.冲激信号 2.阶跃信号 3.斜坡信号 4.正弦信号")
-    print("请选择输出信号：")
-    # sys_status = sys.stdin.readline()
-    sys_status = '2'
-    if sys_status[0] == '1':
-        for i in range(0, 1000):
-            if i == 500:
-                servo.bus_data['angel'][4] = 800
-            else:
-                servo.bus_data['angel'][4] = 500
-            time.sleep(0.01)
-
-    if sys_status[0] == '2':
-        for i in range(0, 1000):
-            if i > 500:
-                servo.bus_data['angel'][4] = 800
-            else:
-                servo.bus_data['angel'][4] = 500
-            time.sleep(0.01)
-
-    if sys_status[0] == '3':
-        for i in range(0, 1000):
-            servo.bus_data['angel'][4] = int(500 + i * 0.3)
-            time.sleep(0.01)
-
-    if sys_status[0] == '4':
-        for i in range(0, 1000):
-            servo.bus_data['angel'][4] = int(500 + 300 * math.sin(2 * math.pi * i / 1000))
-            time.sleep(0.01)
-    return
+                self.refresh(raw_data)
+                self.record(raw_data)
+                self.fps

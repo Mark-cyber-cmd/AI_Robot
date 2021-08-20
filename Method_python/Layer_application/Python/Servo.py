@@ -72,3 +72,36 @@ def servo_pos(bus_client, s_id):
         except BaseException:
             print("舵机数据回传错误")
     return
+
+
+def math_test():
+    print("1.冲激信号 2.阶跃信号 3.斜坡信号 4.正弦信号")
+    print("请选择输出信号：")
+    # sys_status = sys.stdin.readline()
+    sys_status = '2'
+    if sys_status[0] == '1':
+        for i in range(0, 1000):
+            if i == 500:
+                servo.bus_data['angel'][4] = 800
+            else:
+                servo.bus_data['angel'][4] = 500
+            time.sleep(0.01)
+
+    if sys_status[0] == '2':
+        for i in range(0, 1000):
+            if i > 500:
+                servo.bus_data['angel'][4] = 800
+            else:
+                servo.bus_data['angel'][4] = 500
+            time.sleep(0.01)
+
+    if sys_status[0] == '3':
+        for i in range(0, 1000):
+            servo.bus_data['angel'][4] = int(500 + i * 0.3)
+            time.sleep(0.01)
+
+    if sys_status[0] == '4':
+        for i in range(0, 1000):
+            servo.bus_data['angel'][4] = int(500 + 300 * math.sin(2 * math.pi * i / 1000))
+            time.sleep(0.01)
+    return

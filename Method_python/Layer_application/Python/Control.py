@@ -103,3 +103,13 @@ def setdir(filepath):
     else:
         shutil.rmtree(filepath)
         os.mkdir(filepath)
+
+
+def key_scan(self, flag):
+    try:  # used try so that if user pressed other than the given key error will not be shown
+        if keyboard.is_pressed('space'):  # if key 'space' is pressed
+            print('记录落脚一次')
+            flag = 1
+    except BaseException:
+        pass  # if user pressed a key other than the given key the loop will break
+    return flag
