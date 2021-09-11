@@ -1,11 +1,9 @@
-import keyboard
-import math
 import struct
 import time
 
 
 class Gyro:
-    """TODO 所有陀螺仪的基类"""
+    """所有陀螺仪的基类"""
 
     """陀螺仪参数设置"""
     setup_open = b'\xFF\xAA\x69\x88\xB5'
@@ -17,15 +15,19 @@ class Gyro:
 
     """数据存放路径"""
     gyro_address = r".\Data\Data_tmp"
-    servo_address = r".\Data\Data_tmp"
 
     """预设的WIFI白名单"""
     white_list = ['192.168.43.157', '192.168.43.52', '192.168.43.28', '192.168.43.38']
 
-    def __init__(self, client, addr):
+    """管理客户端内存"""
+    client_index = [0, 0, 0, 0]
+
+    def __init__(self, server):
+        self.server = server
+
         self.name = 0
-        self.client = client
-        self.addr = addr
+        self.client = 0
+        self.addr = 0
 
         """陀螺仪数据"""
         self.temper = 0
@@ -39,21 +41,37 @@ class Gyro:
         self.time_angel = 0
         self.time_acc = 0
         self.time_start = 0
+        self.roll_before =0
+
+    def connect(self, s_id):
+        while 1:
+            s_client, addr = self.server.accept()
+            if self.addr[0] in Gyro.white_list:
+                raw_data = self.client.recv(11)
+                if s_id == raw_data[2]:
+                    self.name = raw_data[2]
+                    self.client = s_client
+                    self.addr = addr
+                    self.time_start = time.time()
+                    print("陀螺仪ID:", self.name, '成功连接')
+                    Gyro.client_index[self.name] = True
+                    break
 
     def calibration(self, speed, data):
-        self.addr.send(Gyro.setup_open)
+        self.client.send(Gyro.setup_open)
         time.sleep(0.1)
-        self.addr.send(Gyro.setup_zero)
+        self.client.send(Gyro.setup_zero)
         time.sleep(0.1)
-        self.addr.send(speed)
+        self.client.send(speed)
         time.sleep(0.1)
-        self.addr.send(data)
+        self.client.send(data)
         time.sleep(0.1)
-        self.addr.send(Gyro.setup_close)
+        self.client.send(Gyro.setup_close)
         time.sleep(0.1)
 
     def refresh(self, raw_data):
         try:
+            self.roll_before = self.roll
             if raw_data[1] == 83:
                 self.roll = struct.unpack('h', raw_data[2:4])[0] / 32768 * 180
                 self.pitch = struct.unpack('h', raw_data[4:6])[0] / 32768 * 180
@@ -64,15 +82,8 @@ class Gyro:
                 self.ay = struct.unpack('h', raw_data[4:6])[0] / 32768 * 16 * 9.8
                 self.az = struct.unpack('h', raw_data[6:8])[0] / 32768 * 16 * 9.8
                 self.time_acc = time.time()
-        except BaseException:
+        finally:
             pass
-
-    def fps(self):
-        if (time.time() - self.time_start) % 1 == 0:
-            print('fps' + str(self.name) + ": ", self.fps)
-            self.fps = 0
-        else:
-            self.fps += 1
 
     def record(self, raw_data):
         if raw_data[1] == 83:
@@ -104,21 +115,14 @@ class Gyro:
                 f_a_time.write(str(self.time_acc - self.time_start))
                 f_a_time.write(" ")
 
-        # if self.name == 1:
-        #     with open(gyro_address + r"\human_status.txt", "a") as f_hs:
-        #         f_hs.write(str(gravity_flag))
-        #         f_hs.write(" ")
-        #         gravity_flag = 0
-
     def activate(self):
-        if self.addr[0] in Gyro.white_list:
+        self.calibration()
+        while True:
             raw_data = self.client.recv(11)
-            self.name = raw_data[2]
-            self.time_start = time.time()
-            self.calibration(self.setup_speed_100Hz, self.setup_data_all)
-            print("陀螺仪ID:", self.name, '成功连接并校准')
-            while True:
-                raw_data = self.client.recv(11)
-                self.refresh(raw_data)
-                self.record(raw_data)
-                self.fps
+            self.refresh(raw_data)
+            self.record(raw_data)
+            if (time.time() - self.time_start) % 1 == 0:
+                print('fps' + str(self.name) + ": ", self.fps)
+                self.fps = 0
+            else:
+                self.fps += 1

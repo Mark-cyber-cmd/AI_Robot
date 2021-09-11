@@ -1,26 +1,36 @@
 # coding utf-8
-import socket
 import threading
-import time
-import Gyro as gyro
-import Servo as servo
-import Control as control
+from Gyro import *
+from Robot import *
+from Control import *
+
+
 if __name__ == '__main__':
 
     """     清空临时数据文件夹 开启按键检测  """
-    control.setdir("./Data/Data_tmp")
+    setdir("./Data/Data_tmp")
 
-    """           建立一个服务端            """
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind(('192.168.43.186', 8000))
-    server.listen(5)
-    
-    """         设置系统开始工作时间        """
-    time_start = time.time()
-    print("服务器准备就绪,等待客户端上线..........")
-    while True:
-        s_client, addr = server.accept()  # 不阻塞
-        gyro_app = threading.Thread(target=gyro.gyro_thread, args=(s_client, addr))
-        gyro_app.start()
-        servo_app = threading.Thread(target=servo.bus_thread, args=(s_client, addr))
-        servo_app.start()
+    server = server_init(8000)  # 自动获取本机ip 并在8000端口创建服务器
+    """建立控制对象"""
+    gyro_1 = Gyro(server)
+    gyro_2 = Gyro(server)
+    gyro_3 = Gyro(server)
+    gyro_4 = Gyro(server)
+    gyro_1.connect(1)
+    gyro_2.connect(2)
+    gyro_3.connect(3)
+    gyro_4.connect(4)
+
+    robot = Robot(server)
+    robot.connect()
+
+    gyro_1_app = threading.Thread(target=gyro_1.activate(), args=())
+    gyro_1_app.start()
+    gyro_2_app = threading.Thread(target=gyro_2.activate(), args=())
+    gyro_2_app.start()
+    gyro_3_app = threading.Thread(target=gyro_3.activate(), args=())
+    gyro_3_app.start()
+    gyro_4_app = threading.Thread(target=gyro_4.activate(), args=())
+    gyro_4_app.start()
+    robot_app = threading.Thread(target=control_main(gyro_1, gyro_2, gyro_3, gyro_4, robot), args=())
+    robot_app.start()
