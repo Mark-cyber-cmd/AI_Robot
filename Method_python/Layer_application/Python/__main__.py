@@ -10,6 +10,7 @@ if __name__ == '__main__':
     """     清空临时数据文件夹 开启按键检测  """
     setdir("./Data/Data_tmp")
 
+    connect_wifi("AI_Robot", "88888888")
     server = server_init(8000)  # 自动获取本机ip 并在8000端口创建服务器
     """建立控制对象"""
     gyro_1 = Gyro(server)

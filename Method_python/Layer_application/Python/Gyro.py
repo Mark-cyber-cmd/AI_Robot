@@ -46,7 +46,7 @@ class Gyro:
     def connect(self, s_id):
         while 1:
             s_client, addr = self.server.accept()
-            if self.addr[0] in Gyro.white_list:
+            if addr[0] in Gyro.white_list:
                 raw_data = self.client.recv(11)
                 if s_id == raw_data[2]:
                     self.name = raw_data[2]
