@@ -4,9 +4,15 @@ import shutil
 import keyboard
 import socket
 import pywifi
-import time
+import threading
+from Robot import *
+from Gyro import *
+
 # 保存包中写义的常量
 from pywifi import const
+
+"""预设的WIFI白名单"""
+white_list = ['192.168.43.157', '192.168.43.52', '192.168.43.28', '192.168.43.38']
 
 """                  神经网络控制参数                 """
 w1 = np.loadtxt("./Data/BP_net/Net6/w1.txt", delimiter=" ", dtype="float")
@@ -21,8 +27,42 @@ N = 1  # 控制采样频率相对指令的倍数
 gravity = 0
 
 
-def control_main(gyro_1, gyro_2, gyro_3, gyro_4, robot):
-    global gravity
+def control_gyro():
+    global gyro_1, gyro_2, gyro_3, gyro_4, server
+    while 1:
+        try:
+            s_client, addr = server.accept()
+            if addr[0] in white_list:
+                raw_data = s_client.recv(11)
+                s_id = raw_data[2]
+                try:
+                    exec('gyro_{0}.client = s_client'.format(s_id))
+                    exec('gyro_{0}.addr = addr'.format(s_id))
+                    exec('gyro_{0}.name = s_id'.format(s_id))
+                    exec('Gyro.client_index[s_id - 1] = True')
+                    print('陀螺仪ID:', s_id, '成功连接')
+                    return
+                except Exception as e:
+                    print(e)
+        except OSError as e:
+            pass
+
+
+def control_robot():
+    global server
+    if addr[0] == '192.168.43.189':
+        robot.client = s_client
+        robot.addr = addr
+        robot.status = True
+        print("ai_robot机器人成功连接")
+
+    if 0 not in Gyro.client_index and robot.status:
+        main_app = threading.Thread(target=control_main(), args=())
+        main_app.start()
+
+
+def control_main():
+    global gravity, gyro_1, gyro_2, gyro_3, gyro_4, robot
     bus_data_s = [500, 500, 500, 500]
     if gyro_4.roll - gyro_4.roll_before > 0.1 and gravity == 0:
         robot.servo_move([1, 4], [440, 440], 200)
@@ -84,22 +124,15 @@ def control_main(gyro_1, gyro_2, gyro_3, gyro_4, robot):
     return
 
 
-def server_init(port):
-    """           建立一个服务端            """
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind((get_ip(), port))
-    server.listen(5)
-    print("服务器准备就绪,等待客户端上线..........")
-    return server
-
-
 def get_ip():
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(('8.8.8.8', 80))
-        ip = s.getsockname()[0]
-    finally:
-        s.close()
+    while 1:
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(('127.0.0.1', 80))
+            ip = s.getsockname()[0]
+            break
+        finally:
+            s.close
     return ip
 
 
@@ -154,10 +187,29 @@ def connect_wifi(ssid, key):
 
     ifaces.connect(tmp_profile)  # 连接
     time.sleep(1)  # 尝试10秒能否成功连接
-    isok = True
     if ifaces.status() == const.IFACE_CONNECTED:
-        print("成功连接")
+        print("连接WiFi:", ssid, "成功")
+        return True
     else:
-        print("失败")
-    # ifaces.disconnect()  # 断开连接
-    return isok
+        print("连接WiFi:", ssid, "失败")
+        return False
+
+
+def server_init(port):
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # 不经过WAIT_TIME，直接关闭
+    server.setblocking(False)  # 设置非阻塞编程
+    server.bind(('192.168.43.186', port))  # 自动获取本机ip 并在8000端口创建服务器
+    server.listen(5)
+    print("服务器准备就绪,等待客户端上线..........")
+    return server
+
+
+"""                     生成控制对象                  """
+"""           建立一个服务端            """
+server = server_init(8000)
+gyro_1 = Gyro(server)
+gyro_2 = Gyro(server)
+gyro_3 = Gyro(server)
+gyro_4 = Gyro(server)
+robot = Robot(server)

@@ -15,11 +15,9 @@ class Gyro:
 
     """数据存放路径"""
     gyro_address = r".\Data\Data_tmp"
-
     """预设的WIFI白名单"""
     white_list = ['192.168.43.157', '192.168.43.52', '192.168.43.28', '192.168.43.38']
-
-    """管理客户端内存"""
+    """管理客户端在线情况"""
     client_index = [0, 0, 0, 0]
 
     def __init__(self, server):
@@ -41,21 +39,24 @@ class Gyro:
         self.time_angel = 0
         self.time_acc = 0
         self.time_start = 0
-        self.roll_before =0
+        self.roll_before = 0
 
     def connect(self, s_id):
         while 1:
             s_client, addr = self.server.accept()
+            self.client = s_client
+            self.addr = addr
             if addr[0] in Gyro.white_list:
                 raw_data = self.client.recv(11)
                 if s_id == raw_data[2]:
                     self.name = raw_data[2]
-                    self.client = s_client
-                    self.addr = addr
                     self.time_start = time.time()
                     print("陀螺仪ID:", self.name, '成功连接')
-                    Gyro.client_index[self.name] = True
+                    Gyro.client_index[self.name - 1] = True
                     break
+            else:
+                s_client.close
+                break
 
     def calibration(self, speed, data):
         self.client.send(Gyro.setup_open)
@@ -116,13 +117,16 @@ class Gyro:
                 f_a_time.write(" ")
 
     def activate(self):
-        self.calibration()
+        self.calibration(self.setup_speed_100Hz, self.setup_data_all)
+        self.time_start = time.time()
+        counter = self.time_start
         while True:
             raw_data = self.client.recv(11)
             self.refresh(raw_data)
             self.record(raw_data)
-            if (time.time() - self.time_start) % 1 == 0:
+            if (time.time() - counter) > 1:
                 print('fps' + str(self.name) + ": ", self.fps)
                 self.fps = 0
+                counter = time.time()
             else:
                 self.fps += 1

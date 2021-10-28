@@ -28,6 +28,8 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="Method_python.Layer_application.AI_Robot_python.TCP_server.gyro_data_before" />
+          <option value="Control.gyro_1" />
+          <option value="Control.*" />
         </list>
       </option>
     </inspection_tool>
