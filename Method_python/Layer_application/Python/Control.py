@@ -41,7 +41,7 @@ def control_gyro():
                     exec('gyro_{0}.name = s_id'.format(s_id))
                     exec('Gyro.client_index[s_id - 1] = True')
                     print('陀螺仪ID:', s_id, '成功连接')
-                    return
+                    continue
                 except Exception as e:
                     print(e)
         except OSError as e:
