@@ -42,7 +42,7 @@ def wrap_stub(elf_file):
         data_section = None
     stub = {
         'text': text_section.data,
-        'text_start': text_section.addr,
+        'text_start': text_section.adder,
         'entry': e.entrypoint,
     }
     if data_section is not None:

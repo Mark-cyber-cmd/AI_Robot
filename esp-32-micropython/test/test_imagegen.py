@@ -37,7 +37,7 @@ def segment_matches_section(segment, section):
     Returns True if they match
     """
     sh_size = (section.header.sh_size + 0x3) & ~3  # pad length of ELF sections
-    return section.header.sh_addr == segment.addr and sh_size == len(segment.data)
+    return section.header.sh_addr == segment.adder and sh_size == len(segment.data)
 
 
 class BaseTestCase(unittest.TestCase):
@@ -65,9 +65,9 @@ class BaseTestCase(unittest.TestCase):
             sh_addr = section.header.sh_addr
             data = section.data()
             # no section should start at the same address as the ELF section.
-            for seg in sorted(image.segments, key=lambda s: s.addr):
-                print("comparing seg 0x%x sec 0x%x len 0x%x" % (seg.addr, sh_addr, len(data)))
-                self.assertFalse(seg.addr == sh_addr, "%s should not be in the binary image" % section_name)
+            for seg in sorted(image.segments, key=lambda s: s.adder):
+                print("comparing seg 0x%x sec 0x%x len 0x%x" % (seg.adder, sh_addr, len(data)))
+                self.assertFalse(seg.adder == sh_addr, "%s should not be in the binary image" % section_name)
 
     def assertImageContainsSection(self, image, elf, section_name):
         """
@@ -84,9 +84,9 @@ class BaseTestCase(unittest.TestCase):
             # so look through each segment and remove it from ELF section 'data'
             # as we find it in the image segments. When we're done 'data' should
             # all be accounted for
-            for seg in sorted(image.segments, key=lambda s: s.addr):
-                print("comparing seg 0x%x sec 0x%x len 0x%x" % (seg.addr, sh_addr, len(data)))
-                if seg.addr == sh_addr:
+            for seg in sorted(image.segments, key=lambda s: s.adder):
+                print("comparing seg 0x%x sec 0x%x len 0x%x" % (seg.adder, sh_addr, len(data)))
+                if seg.adder == sh_addr:
                     overlap_len = min(len(seg.data), len(data))
                     self.assertEqual(data[:overlap_len], seg.data[:overlap_len],
                                      "ELF '%s' section has mis-matching binary image data" % section_name)
@@ -198,7 +198,7 @@ class ESP8266V2ImageTests(BaseTestCase):
                 self.assertImageDoesNotContainSection(image, elfpath, sec)
 
             irom_segment = image.segments[0]
-            self.assertEqual(0, irom_segment.addr,
+            self.assertEqual(0, irom_segment.adder,
                              "IROM segment 'load address' should be zero")
             with open(elfpath, "rb") as f:
                 e = ELFFile(f)

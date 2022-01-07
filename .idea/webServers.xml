@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="19c9af3d-1aaf-4ca0-9373-e20152dcfdd0" name="raspberrypi_zero">
+        <fileTransfer rootFolder="/home/dym/Python" accessType="SFTP" host="raspberrypi.local" port="22" sshConfigId="da416005-8aba-4029-8eca-ffc6592bd001" sshConfig="pi@raspberrypi.local:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

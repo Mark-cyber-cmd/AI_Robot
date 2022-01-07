@@ -25,7 +25,7 @@ class Gyro:
 
         self.name = 0
         self.client = 0
-        self.addr = 0
+        self.adder = 0
 
         """陀螺仪数据"""
         self.temper = 0
@@ -43,10 +43,10 @@ class Gyro:
 
     def connect(self, s_id):
         while 1:
-            s_client, addr = self.server.accept()
+            s_client, adder = self.server.accept()
             self.client = s_client
-            self.addr = addr
-            if addr[0] in Gyro.white_list:
+            self.adder = adder
+            if adder[0] in Gyro.white_list:
                 raw_data = self.client.recv(11)
                 if s_id == raw_data[2]:
                     self.name = raw_data[2]

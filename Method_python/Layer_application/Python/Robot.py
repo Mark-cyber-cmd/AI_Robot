@@ -1,30 +1,18 @@
 import time
 import struct
+import serial
 
 servo_address = r".\Data\Data_tmp"
 
 
 class Robot:
-    def __init__(self, server):
-        self.server = server
-        self.client = 0
-        self.addr = 0
+    def __init__(self):
+        self.ser = serial.Serial("COM9", 115200, timeout=5)  # windows系统使用com1口连接串行口
         self.status = 0
 
         self.move_cmd = 3
         self.back_data = []
         self.time_start = 0
-
-    def connect(self):
-        while 1:
-            s_client, addr = self.server.accept()
-            if addr[0] == '192.168.43.189':
-                self.client = s_client
-                self.addr = addr
-                self.time_start = time.time()
-                self.status = 1
-                print("机器人成功连接:")
-                break
 
     def servo_move(self, s_id, s_angle, s_time):
         servo_cmd = [b'\x55', b'\x55', struct.pack('B', len(s_id) * 3 + 5), struct.pack('B', self.move_cmd),
@@ -33,15 +21,15 @@ class Robot:
             servo_cmd.append(struct.pack('B', s_id[i]))
             servo_cmd.append(struct.pack('H', int(s_angle[i])))
         servo_cmd = b''.join(servo_cmd)
-        self.client.send(servo_cmd)
+        self.ser.write(servo_cmd)
         return
 
     def servo_pos(self, s_id):
         for i in range(len(s_id)):
             servo_cmd = [b'\x55', b'\x55', struct.pack('B', 4), b'\x15', struct.pack('B', 1), struct.pack('B', s_id[i])]
             servo_cmd = b''.join(servo_cmd)
-            self.client.send(servo_cmd)
-            pos_data = self.client.recv(8)
+            self.ser.write(servo_cmd)
+            pos_data = self.ser.read(8)
             try:
                 self.back_data[s_id[i] - 1] = struct.unpack('H', pos_data[6:8])[0]
             except BaseException:

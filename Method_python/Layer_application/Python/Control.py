@@ -12,7 +12,7 @@ from Gyro import *
 from pywifi import const
 
 """预设的WIFI白名单"""
-white_list = ['192.168.43.157', '192.168.43.52', '192.168.43.28', '192.168.43.38']
+white_list = ['192.168.43.157', '192.168.43.52', '192.168.43.28', '192.168.43.38', "172.20.10.3"]
 
 """                  神经网络控制参数                 """
 w1 = np.loadtxt("./Data/BP_net/Net6/w1.txt", delimiter=" ", dtype="float")
@@ -30,30 +30,25 @@ gravity = 0
 def control_gyro():
     global gyro_1, gyro_2, gyro_3, gyro_4, server
     while 1:
+        s_client, adder = server.accept()
         try:
-            s_client, addr = server.accept()
-            if addr[0] in white_list:
+            if adder[0] in white_list:
                 raw_data = s_client.recv(11)
                 s_id = raw_data[2]
-                try:
-                    exec('gyro_{0}.client = s_client'.format(s_id))
-                    exec('gyro_{0}.addr = addr'.format(s_id))
-                    exec('gyro_{0}.name = s_id'.format(s_id))
-                    exec('Gyro.client_index[s_id - 1] = True')
-                    print('陀螺仪ID:', s_id, '成功连接')
-                    continue
-                except Exception as e:
-                    print(e)
-        except OSError as e:
-            pass
+                exec('gyro_{0}.client = s_client'.format(s_id))
+                exec('gyro_{0}.adder = adder'.format(s_id))
+                exec('gyro_{0}.name = s_id'.format(s_id))
+                exec('Gyro.client_index[s_id - 1] = True')
+                print('陀螺仪ID:', s_id, '成功连接')
+        except Exception as e:
+            print(e)
+
+        if Gyro.client_index.count(0) == 2:
+            break
 
 
 def control_robot():
-    global server
-    if addr[0] == '192.168.43.189':
-        robot.client = s_client
-        robot.addr = addr
-        robot.status = True
+    if robot.status:
         print("ai_robot机器人成功连接")
 
     if 0 not in Gyro.client_index and robot.status:
@@ -128,11 +123,12 @@ def get_ip():
     while 1:
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            s.connect(('127.0.0.1', 80))
+            s.connect(('www.baidu.com', 80))
             ip = s.getsockname()[0]
             break
         finally:
             s.close
+    print("服务器IP为：", ip)
     return ip
 
 
@@ -186,7 +182,7 @@ def connect_wifi(ssid, key):
     tmp_profile = ifaces.add_network_profile(profile)  # 加载配置文件
 
     ifaces.connect(tmp_profile)  # 连接
-    time.sleep(1)  # 尝试10秒能否成功连接
+    time.sleep(5)  # 尝试10秒能否成功连接
     if ifaces.status() == const.IFACE_CONNECTED:
         print("连接WiFi:", ssid, "成功")
         return True
@@ -196,20 +192,22 @@ def connect_wifi(ssid, key):
 
 
 def server_init(port):
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # 不经过WAIT_TIME，直接关闭
-    server.setblocking(False)  # 设置非阻塞编程
-    server.bind(('192.168.43.186', port))  # 自动获取本机ip 并在8000端口创建服务器
-    server.listen(5)
-    print("服务器准备就绪,等待客户端上线..........")
-    return server
+    server_s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # 不经过WAIT_TIME，直接关闭
+    # server_s.setblocking(False)  # 设置非阻塞编程
+    server_s.bind((get_ip(), port))  # 自动获取本机ip 并在8000端口创建服务器
+    server_s.listen(5)
+    print("服务器准备就绪,等待客户端上线..........\r\n\r\n")
+    return server_s
 
 
-"""                     生成控制对象                  """
-"""           建立一个服务端            """
-server = server_init(8000)
-gyro_1 = Gyro(server)
-gyro_2 = Gyro(server)
-gyro_3 = Gyro(server)
-gyro_4 = Gyro(server)
-robot = Robot(server)
+while 1:
+    """           建立一个服务端            """
+    server = server_init(8000)
+    """            成控制对象               """
+    gyro_1 = Gyro(server)
+    gyro_2 = Gyro(server)
+    gyro_3 = Gyro(server)
+    gyro_4 = Gyro(server)
+    # robot = Robot()
+    break

@@ -2647,7 +2647,7 @@ class BaseFirmwareImage(object):
     def save_segment(self, f, segment, checksum=None):
         """ Save the next segment to the image file, return next checksum value if provided """
         segment_data = self.maybe_patch_segment_data(f, segment.data)
-        f.write(struct.pack('<II', segment.addr, len(segment_data)))
+        f.write(struct.pack('<II', segment.adder, len(segment_data)))
         f.write(segment_data)
         if checksum is not None:
             return ESPLoader.checksum(segment_data, checksum)
@@ -2685,7 +2685,7 @@ class BaseFirmwareImage(object):
         return ESP8266ROM.IROM_MAP_START <= addr < ESP8266ROM.IROM_MAP_END
 
     def get_irom_segment(self):
-        irom_segments = [s for s in self.segments if self.is_irom_addr(s.addr)]
+        irom_segments = [s for s in self.segments if self.is_irom_addr(s.adder)]
         if len(irom_segments) > 0:
             if len(irom_segments) != 1:
                 raise FatalError('Found %d segments that could be irom0. Bad ELF file?' % len(irom_segments))
@@ -2709,7 +2709,7 @@ class BaseFirmwareImage(object):
             next_elem = self.segments[i]
             if all((elem.get_memory_type(self) == next_elem.get_memory_type(self),
                     elem.include_in_checksum == next_elem.include_in_checksum,
-                    next_elem.addr == elem.addr + len(elem.data))):
+                    next_elem.adder == elem.adder + len(elem.data))):
                 # Merge any segment that ends where the next one starts, without spanning memory types
                 #
                 # (don't 'pad' any gaps here as they may be excluded from the image due to 'noinit'
@@ -2960,20 +2960,20 @@ class ESP32FirmwareImage(BaseFirmwareImage):
             checksum = ESPLoader.ESP_CHECKSUM_MAGIC
 
             # split segments into flash-mapped vs ram-loaded, and take copies so we can mutate them
-            flash_segments = [copy.deepcopy(s) for s in sorted(self.segments, key=lambda s:s.addr) if self.is_flash_addr(s.addr)]
-            ram_segments = [copy.deepcopy(s) for s in sorted(self.segments, key=lambda s:s.addr) if not self.is_flash_addr(s.addr)]
+            flash_segments = [copy.deepcopy(s) for s in sorted(self.segments, key=lambda s:s.adder) if self.is_flash_addr(s.adder)]
+            ram_segments = [copy.deepcopy(s) for s in sorted(self.segments, key=lambda s:s.adder) if not self.is_flash_addr(s.adder)]
 
             # check for multiple ELF sections that are mapped in the same flash mapping region.
             # this is usually a sign of a broken linker script, but if you have a legitimate
             # use case then let us know
             if len(flash_segments) > 0:
-                last_addr = flash_segments[0].addr
+                last_addr = flash_segments[0].adder
                 for segment in flash_segments[1:]:
-                    if segment.addr // self.IROM_ALIGN == last_addr // self.IROM_ALIGN:
+                    if segment.adder // self.IROM_ALIGN == last_addr // self.IROM_ALIGN:
                         raise FatalError(("Segment loaded at 0x%08x lands in same 64KB flash mapping as segment loaded at 0x%08x. "
                                           "Can't generate binary. Suggest changing linker script or ELF to merge sections.") %
-                                         (segment.addr, last_addr))
-                    last_addr = segment.addr
+                                         (segment.adder, last_addr))
+                    last_addr = segment.adder
 
             def get_alignment_data_needed(segment):
                 # Actual alignment (in data bytes) required for a segment header: positioned so that
@@ -2981,7 +2981,7 @@ class ESP32FirmwareImage(BaseFirmwareImage):
                 #
                 # (this is because the segment's vaddr may not be IROM_ALIGNed, more likely is aligned
                 # IROM_ALIGN+0x18 to account for the binary file header
-                align_past = (segment.addr % self.IROM_ALIGN) - self.SEG_HEADER_LEN
+                align_past = (segment.adder % self.IROM_ALIGN) - self.SEG_HEADER_LEN
                 pad_len = (self.IROM_ALIGN - (f.tell() % self.IROM_ALIGN)) + align_past
                 if pad_len == 0 or pad_len == self.IROM_ALIGN:
                     return 0  # already aligned
@@ -3008,7 +3008,7 @@ class ESP32FirmwareImage(BaseFirmwareImage):
                     total_segments += 1
                 else:
                     # write the flash segment
-                    assert (f.tell() + 8) % self.IROM_ALIGN == segment.addr % self.IROM_ALIGN
+                    assert (f.tell() + 8) % self.IROM_ALIGN == segment.adder % self.IROM_ALIGN
                     checksum = self.save_flash_segment(f, segment, checksum)
                     flash_segments.pop(0)
                     total_segments += 1
@@ -3480,9 +3480,9 @@ def load_ram(esp, args):
     print('RAM boot...')
     for seg in image.segments:
         size = len(seg.data)
-        print('Downloading %d bytes at %08x...' % (size, seg.addr), end=' ')
+        print('Downloading %d bytes at %08x...' % (size, seg.adder), end=' ')
         sys.stdout.flush()
-        esp.mem_begin(size, div_roundup(size, esp.ESP_RAM_BLOCK), esp.ESP_RAM_BLOCK, seg.addr)
+        esp.mem_begin(size, div_roundup(size, esp.ESP_RAM_BLOCK), esp.ESP_RAM_BLOCK, seg.adder)
 
         seq = 0
         while len(seg.data) > 0:
