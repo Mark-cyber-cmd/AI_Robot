@@ -4,7 +4,6 @@ import shutil
 import keyboard
 import socket
 import pywifi
-import threading
 from Robot import *
 from Gyro import *
 
@@ -12,7 +11,7 @@ from Gyro import *
 from pywifi import const
 
 """预设的WIFI白名单"""
-white_list = ['192.168.43.157', '192.168.43.52', '192.168.43.28', '192.168.43.38', "172.20.10.3"]
+white_list = ["192.168.124.26"]
 
 """                  神经网络控制参数                 """
 w1 = np.loadtxt("./Data/BP_net/Net6/w1.txt", delimiter=" ", dtype="float")
@@ -47,18 +46,24 @@ def control_gyro():
             break
 
 
-def control_robot():
-    if robot.status:
-        print("ai_robot机器人成功连接")
-
-    if 0 not in Gyro.client_index and robot.status:
-        main_app = threading.Thread(target=control_main(), args=())
-        main_app.start()
-
-
 def control_main():
     global gravity, gyro_1, gyro_2, gyro_3, gyro_4, robot
+
+    # 默认舵机位置
     bus_data_s = [500, 500, 500, 500]
+    # 导入陀螺仪数据，组成神经网络输入端数据
+    data_set = [[gyro_1.ax, gyro_1.ay, gyro_1.az, gyro_4.ax,
+                gyro_4.ay, gyro_4.az, gyro_1.roll, gyro_1.pitch,
+                gyro_1.yaw, gyro_4.roll, gyro_4.pitch, gyro_4.yaw]]
+    data_set = np.array(data_set).T
+
+    # TODO 待测试神经网络代码，现用经验法判断
+    # if settle_down(data_set):
+    #     robot.servo_move([1, 4], [500, 500], 200)
+    #     time.sleep(0.2)
+    #     gravity = 0
+
+    # 若一只腿抬起则将重心偏移致并双腿恢复到并排状态
     if gyro_4.roll - gyro_4.roll_before > 0.1 and gravity == 0:
         robot.servo_move([1, 4], [440, 440], 200)
         time.sleep(0.2)
@@ -66,6 +71,7 @@ def control_main():
         time.sleep(0.5)
         gravity = 1
 
+    # 在gravity=1状态下跟随动作并检测是否落脚
     if abs(gyro_4.roll + gyro_1.roll) > 1 and gravity == 1:
         bus_data_s[0] = \
             500 + gyro_4.roll / 270 * 1000
@@ -78,11 +84,13 @@ def control_main():
         robot.servo_move([2, 3, 5, 6], 3, bus_data_s, con_time)
         time.sleep(con_time / 1000)
 
+        # 此处使用8倍关系经验判断落脚阈值为5度
         if gyro_4.roll + 8 * gyro_1.roll < 5:
             robot.servo_move([1, 4], [500, 500], 200)
             time.sleep(0.2)
             gravity = 0
 
+    # 相同的操作在另外一只脚上的镜像
     if gyro_1.roll - gyro_1.roll_before > 0.1 and gravity == 0:
         robot.servo_move([1, 4], [560, 560], 200)
         time.sleep(0.2)
@@ -90,16 +98,7 @@ def control_main():
         time.sleep(0.5)
         gravity = -1
 
-    # TODO 待测试神经网络代码
-    # data_set = [[gyro_1.ax, gyro_1.ay, gyro_1.az, gyro_4.ax,
-    #             gyro_4.ay, gyro_4.az, gyro_1.roll, gyro_1.pitch,
-    #             gyro_1.yaw, gyro_4.roll, gyro_4.pitch, gyro_4.yaw]]
-    # data_set = np.array(data_set).T
-    # if settle_down(data_set):
-    #     robot.servo_move([1, 4], [500, 500], 200)
-    #     time.sleep(0.2)
-    #     gravity = 0
-
+    # 相同的操作在另外一只脚上的跟随
     if abs(gyro_4.roll + gyro_1.roll) > 1 and gravity == -1:
         bus_data_s[0] = \
             500 - gyro_1.roll / 270 * 1000
@@ -112,6 +111,7 @@ def control_main():
         robot.servo_move([2, 3, 5, 6], bus_data_s, con_time)
         time.sleep(con_time / 1000)
 
+        # 相同的操作以8倍关系经验判断落脚阈值为5度
         if gyro_1.roll + 8 * gyro_4.roll < 5:
             robot.servo_move([1, 4], [500, 500], 200)
             time.sleep(0.2)
@@ -197,7 +197,7 @@ def server_init(port):
     # server_s.setblocking(False)  # 设置非阻塞编程
     server_s.bind((get_ip(), port))  # 自动获取本机ip 并在8000端口创建服务器
     server_s.listen(5)
-    print("服务器准备就绪,等待客户端上线..........\r\n\r\n")
+    print("服务器准备就绪,等待客户端上线..........\r\n")
     return server_s
 
 
@@ -209,5 +209,5 @@ while 1:
     gyro_2 = Gyro(server)
     gyro_3 = Gyro(server)
     gyro_4 = Gyro(server)
-    # robot = Robot()
+    robot = Robot()
     break
