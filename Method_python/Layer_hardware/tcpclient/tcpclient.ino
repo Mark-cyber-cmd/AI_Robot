@@ -5,6 +5,13 @@
 #define STAPSK  "88888888"
 #endif
 
+const int ledPin =  LED_BUILTIN;
+
+
+int ledState = LOW;             // ledState used to set the LED
+unsigned long previousMillis = 0;        // will store last time LED was updated
+const long interval = 1000;           // interval at which to blink (milliseconds)
+
 const char* ssid     = STASSID;
 const char* password = STAPSK;
 
@@ -30,29 +37,31 @@ WiFiClient client;
 
 void setup() 
 {
+  pinMode(ledPin, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);  
+  
   Serial.begin(115200);
+  
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
-
-  Serial.print("\r\nCONNECTING 1!!!\r\n");
   
   while (WiFi.status() != WL_CONNECTED) 
   {
       delay(50);
   }
-  
-  Serial.print("\r\nCONNECTING 2!!!\r\n");
+  LED_Blink_2();
+  Serial.print("\r\nWiFi connected\r\n");
   
   while (!client.connect(host, port)) 
   {
       delay(50);
   }
-
-  Serial.print("\r\nCONNECTED!!!\r\n");
+  LED_Blink_3();
+  Serial.print("\r\nserver connected\r\n");
 
   id[0] = 0x55;
   id[1] = 0x01;
-  id[2] = 0x02;
+  id[2] = 0x03; //命名位
   id[3] = 0x00;
   id[4] = 0x00;
   id[5] = 0x00;
@@ -73,6 +82,7 @@ RESET:
           USART_pro();
           GYRO_pro(RXbuff); 
           TCP_pro();
+          LED_Blink_always();
       }
 }
 
@@ -159,4 +169,51 @@ void TCP_pro(void)
         }
         client.write(id,11);     
     }    
+}
+
+void LED_Blink_always()
+{
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - previousMillis >= interval) {
+
+    previousMillis = currentMillis;
+
+    if (ledState == LOW) {
+      ledState = HIGH;
+    } else {
+      ledState = LOW;
+    }
+
+    digitalWrite(ledPin, ledState);
+  }
+}
+
+void LED_Blink_2()
+{
+  digitalWrite(LED_BUILTIN, LOW);   // turn the LED on (HIGH is the voltage level)
+  delay(500);                       // wait for a second
+  digitalWrite(LED_BUILTIN, HIGH);    // turn the LED off by making the voltage LOW
+  delay(500);                       // wait for a second  
+    digitalWrite(LED_BUILTIN, LOW);   // turn the LED on (HIGH is the voltage level)
+  delay(500);                       // wait for a second
+  digitalWrite(LED_BUILTIN, HIGH);    // turn the LED off by making the voltage LOW
+  delay(500);                       // wait for a second  
+}
+
+
+void LED_Blink_3()
+{
+  digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(500);                       // wait for a second
+  digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+  delay(500);                       // wait for a second  
+  digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(500);                       // wait for a second
+  digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+  delay(500);                       // wait for a second 
+    digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(500);                       // wait for a second
+  digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+  delay(500);  
 }

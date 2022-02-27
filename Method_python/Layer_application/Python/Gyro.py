@@ -15,17 +15,15 @@ class Gyro:
 
     """数据存放路径"""
     gyro_address = r".\Data\Data_tmp"
-    """预设的WIFI白名单"""
-    white_list = ['192.168.43.157', '192.168.43.52', '192.168.43.28', '192.168.43.38']
     """管理客户端在线情况"""
-    client_index = [0, 0, 0, 0]
+    client_index = []
 
     def __init__(self, server):
         self.server = server
 
-        self.name = 0
-        self.client = 0
-        self.adder = 0
+        self.name = None
+        self.client = None
+        self.adder = None
 
         """陀螺仪数据"""
         self.temper = 0
@@ -46,17 +44,19 @@ class Gyro:
             s_client, adder = self.server.accept()
             self.client = s_client
             self.adder = adder
-            if adder[0] in Gyro.white_list:
+            try:
                 raw_data = self.client.recv(11)
-                if s_id == raw_data[2]:
+                if s_id == raw_data[2] and raw_data[1] == 1:
                     self.name = raw_data[2]
                     self.time_start = time.time()
                     print("陀螺仪ID:", self.name, '成功连接')
-                    Gyro.client_index[self.name - 1] = True
+                    Gyro.client_index.append(s_id)
                     break
-            else:
-                s_client.close
-                break
+                else:
+                    s_client.close()
+                    break
+            except Exception as e:
+                print(e)
 
     def calibration(self, speed, data):
         self.client.send(Gyro.setup_open)
@@ -83,8 +83,8 @@ class Gyro:
                 self.ay = struct.unpack('h', raw_data[4:6])[0] / 32768 * 16 * 9.8
                 self.az = struct.unpack('h', raw_data[6:8])[0] / 32768 * 16 * 9.8
                 self.time_acc = time.time()
-        finally:
-            pass
+        except Exception as e:
+            print(e)
 
     def record(self, raw_data):
         if raw_data[1] == 83:
@@ -125,7 +125,6 @@ class Gyro:
             self.refresh(raw_data)
             self.record(raw_data)
             if (time.time() - counter) > 1:
-                print('fps' + str(self.name) + ": ", self.fps)
                 self.fps = 0
                 counter = time.time()
             else:

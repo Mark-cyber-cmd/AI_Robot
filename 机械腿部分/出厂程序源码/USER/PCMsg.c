@@ -2,8 +2,6 @@
 
 
 
-
-
 static bool fUartRxComplete = FALSE;
 static uint8 UartRxBuffer[260];
 uint8 Uart1RxBuffer[260];
