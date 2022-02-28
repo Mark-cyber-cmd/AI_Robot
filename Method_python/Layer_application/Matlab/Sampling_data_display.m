@@ -1,7 +1,7 @@
 clear;
 clc;
 
-Data_address = "./Data/Data_base/zzm/大腿数据_12/";
+Data_address = "./Data/Data_base/zzm/大腿数据_8/";
 %主程序
 gyro_ax1 = importdata(Data_address + 'gyro_ax1.txt');
 gyro_ay1 = importdata(Data_address + 'gyro_ay1.txt');
@@ -21,7 +21,7 @@ gyro_a_time4 = importdata(Data_address + 'gyro_a_time4.txt');
 gyro_angel_time4 = importdata(Data_address + 'gyro_angel_time4.txt');
 output = importdata(Data_address + "human_status.txt");
 
-N = 1386; %自己手动输入吧
+N = 1369; %自己手动输入吧
 gyro_ax1 = interp1(0:1/(length(gyro_ax1)-1):1,gyro_ax1,0:1/(N-1):1,'linear');
 gyro_ay1 = interp1(0:1/(length(gyro_ay1)-1):1,gyro_ay1,0:1/(N-1):1,'linear');
 gyro_az1 = interp1(0:1/(length(gyro_az1)-1):1,gyro_az1,0:1/(N-1):1,'linear');
@@ -58,10 +58,10 @@ input(12,:) = gyro_yaw4;
 
 [inputn,inputps]=mapminmax(input);%归一化到[-1,1]之间，inputps用来作下一次同样的归一化
 
-w1 = importdata("./BP_net/Net6/w1.txt");
-w2 = importdata("./BP_net/Net6/w2.txt");
-b1 = importdata("./BP_net/Net6/b1.txt");
-b2 = importdata("./BP_net/Net6/b2.txt");
+w1 = importdata("./Data/BP_net/Net6/w1.txt");
+w2 = importdata("./Data/BP_net/Net6/w2.txt");
+b1 = importdata("./Data/BP_net/Net6/b1.txt");
+b2 = importdata("./Data/BP_net/Net6/b2.txt");
 
 step1 = w1 * inputn;
 step2 = tansig(step1 - b1);

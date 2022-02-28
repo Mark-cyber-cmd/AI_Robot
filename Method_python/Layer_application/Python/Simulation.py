@@ -1,7 +1,6 @@
 # coding:utf-8
 from threading import Thread
 import socket
-from Robot import *
 from Gyro import *
 
 '''Input: 连续字符串  Output： 二进制数据数组     '''
@@ -11,7 +10,8 @@ def format_data(gyro_data):
     gyro_data = gyro_data.split()
     data = []
     for i in range(len(gyro_data)):
-        data.append(struct.pack('h', int(float(gyro_data[i]))))
+        data_temp = int(float(gyro_data[i]) / 180 * 32768)
+        data.append(struct.pack('h', data_temp))
     return data
 
 
@@ -92,9 +92,7 @@ with open('./Data/Data_base/zzm/大腿数据_8/gyro_pitch1.txt', 'r') as f:
     gyro_data_pitch1 = f.read()
     gyro_data_pitch1 = format_data(gyro_data_pitch1)
 
-
 gyro_data_1 = pack_data(gyro_data_roll1, gyro_data_yaw1, gyro_data_pitch1)
-
 
 with open('./Data/Data_base/zzm/大腿数据_3/gyro_roll4.txt', 'r') as f:
     gyro_data_roll4 = f.read()
