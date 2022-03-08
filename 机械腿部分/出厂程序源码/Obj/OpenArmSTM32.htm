@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Obj\OpenArmSTM32.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Obj\OpenArmSTM32.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060300: Last Updated: Fri Apr 16 00:17:55 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Thu Mar 03 23:43:48 2022
 <BR><P>
 <H3>Maximum Stack Usage =        180 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -346,11 +346,11 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[7e]"></a>NVIC_Init</STRONG> (Thumb, 100 bytes, Stack size 16 bytes, misc.o(.text))
+<P><STRONG><a name="[7f]"></a>NVIC_Init</STRONG> (Thumb, 100 bytes, Stack size 16 bytes, misc.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = NVIC_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitUart2
-<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitTimer3
+<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitTimer3
 <LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitUart3
 <LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitUart1
 <LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitTimer2
@@ -475,7 +475,7 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphResetCmd
 </UL>
 
-<P><STRONG><a name="[80]"></a>GPIO_Init</STRONG> (Thumb, 278 bytes, Stack size 24 bytes, stm32f10x_gpio.o(.text))
+<P><STRONG><a name="[81]"></a>GPIO_Init</STRONG> (Thumb, 278 bytes, Stack size 24 bytes, stm32f10x_gpio.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = GPIO_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitUart2
@@ -578,7 +578,7 @@ Global Symbols
 
 <P><STRONG><a name="[137]"></a>RCC_AHBPeriphClockCmd</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, stm32f10x_rcc.o(.text), UNUSED)
 
-<P><STRONG><a name="[7f]"></a>RCC_APB2PeriphClockCmd</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, stm32f10x_rcc.o(.text))
+<P><STRONG><a name="[80]"></a>RCC_APB2PeriphClockCmd</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, stm32f10x_rcc.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitUart2
 <LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitPS2
 <LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitSpi
@@ -938,13 +938,13 @@ Global Symbols
 
 <P><STRONG><a name="[195]"></a>USART_ClockStructInit</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, stm32f10x_usart.o(.text), UNUSED)
 
-<P><STRONG><a name="[85]"></a>USART_Cmd</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, stm32f10x_usart.o(.text))
+<P><STRONG><a name="[86]"></a>USART_Cmd</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, stm32f10x_usart.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitUart2
 <LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitUart3
 <LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitUart1
 </UL>
 
-<P><STRONG><a name="[84]"></a>USART_ITConfig</STRONG> (Thumb, 74 bytes, Stack size 20 bytes, stm32f10x_usart.o(.text))
+<P><STRONG><a name="[85]"></a>USART_ITConfig</STRONG> (Thumb, 74 bytes, Stack size 20 bytes, stm32f10x_usart.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = USART_ITConfig
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitUart2
@@ -966,7 +966,7 @@ Global Symbols
 
 <P><STRONG><a name="[19c]"></a>USART_SendData</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, stm32f10x_usart.o(.text), UNUSED)
 
-<P><STRONG><a name="[87]"></a>USART_ReceiveData</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, stm32f10x_usart.o(.text))
+<P><STRONG><a name="[88]"></a>USART_ReceiveData</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, stm32f10x_usart.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[33]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_IRQHandler
 <LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_IRQHandler
 <LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_IRQHandler
@@ -996,7 +996,7 @@ Global Symbols
 
 <P><STRONG><a name="[1a8]"></a>USART_ClearFlag</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, stm32f10x_usart.o(.text), UNUSED)
 
-<P><STRONG><a name="[86]"></a>USART_GetITStatus</STRONG> (Thumb, 84 bytes, Stack size 16 bytes, stm32f10x_usart.o(.text))
+<P><STRONG><a name="[87]"></a>USART_GetITStatus</STRONG> (Thumb, 84 bytes, Stack size 16 bytes, stm32f10x_usart.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = USART_GetITStatus
 </UL>
 <BR>[Called By]<UL><LI><a href="#[33]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_IRQHandler
@@ -1006,12 +1006,13 @@ Global Symbols
 
 <P><STRONG><a name="[1a9]"></a>USART_ClearITPendingBit</STRONG> (Thumb, 52 bytes, Stack size 8 bytes, stm32f10x_usart.o(.text), UNUSED)
 
-<P><STRONG><a name="[44]"></a>main</STRONG> (Thumb, 168 bytes, Stack size 0 bytes, main.o(.text))
+<P><STRONG><a name="[44]"></a>main</STRONG> (Thumb, 176 bytes, Stack size 0 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 180<LI>Call Chain = main &rArr; TaskRun &rArr; TaskRobotRun &rArr; ActSubFrameRun &rArr; BusServoCtrl &rArr; USART2SendDataPacket
 </UL>
 <BR>[Calls]<UL><LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_PriorityGroupConfig
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemInit
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART1SendDataPacket
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
 <LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitUart3
 <LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitUart1
 <LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitTimer2
@@ -1036,25 +1037,25 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ActSubFrameRun
 <LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskBLEMsgHandle
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskPCMsgHandle
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
 </UL>
 
-<P><STRONG><a name="[77]"></a>ServoPwmDutyCompare</STRONG> (Thumb, 254 bytes, Stack size 16 bytes, pwm.o(.text))
+<P><STRONG><a name="[78]"></a>ServoPwmDutyCompare</STRONG> (Thumb, 254 bytes, Stack size 16 bytes, pwm.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = ServoPwmDutyCompare &rArr; __aeabi_fmul
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
-<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2f
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2iz
-<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
+<BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
+<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2f
+<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
+<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2iz
+<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
 </UL>
 <BR>[Called By]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskTimeHandle
 </UL>
 
-<P><STRONG><a name="[7d]"></a>InitTimer3</STRONG> (Thumb, 92 bytes, Stack size 8 bytes, pwm.o(.text))
+<P><STRONG><a name="[7e]"></a>InitTimer3</STRONG> (Thumb, 92 bytes, Stack size 8 bytes, pwm.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = InitTimer3 &rArr; NVIC_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_Init
+<BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitPWM
 </UL>
@@ -1062,21 +1063,21 @@ Global Symbols
 <P><STRONG><a name="[69]"></a>InitPWM</STRONG> (Thumb, 114 bytes, Stack size 8 bytes, pwm.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = InitPWM &rArr; GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
-<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
-<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitTimer3
+<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
+<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitTimer3
 </UL>
 <BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[81]"></a>Timer3ARRValue</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, pwm.o(.text))
+<P><STRONG><a name="[82]"></a>Timer3ARRValue</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, pwm.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM3_IRQHandler
 </UL>
 
 <P><STRONG><a name="[2a]"></a>TIM3_IRQHandler</STRONG> (Thumb, 392 bytes, Stack size 4 bytes, pwm.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = TIM3_IRQHandler
 </UL>
-<BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer3ARRValue
+<BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer3ARRValue
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_md.o(RESET)
 </UL>
@@ -1110,7 +1111,7 @@ Global Symbols
 <P><STRONG><a name="[38]"></a>SystemInit</STRONG> (Thumb, 78 bytes, Stack size 8 bytes, system_stm32f10x.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = SystemInit &rArr; SetSysClock &rArr; SetSysClockTo72
 </UL>
-<BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSysClock
+<BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSysClock
 </UL>
 <BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1121,36 +1122,37 @@ Global Symbols
 <P><STRONG><a name="[6b]"></a>InitUart1</STRONG> (Thumb, 156 bytes, Stack size 32 bytes, pcmsg.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 100<LI>Call Chain = InitUart1 &rArr; USART_Init &rArr; RCC_GetClocksFreq
 </UL>
-<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ITConfig
-<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Cmd
+<BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ITConfig
+<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Cmd
 <LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Init
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
-<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
-<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_Init
+<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[1ab]"></a>Uart1SendData</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, pcmsg.o(.text), UNUSED)
 
-<P><STRONG><a name="[89]"></a>UART1SendDataPacket</STRONG> (Thumb, 52 bytes, Stack size 8 bytes, pcmsg.o(.text))
+<P><STRONG><a name="[76]"></a>UART1SendDataPacket</STRONG> (Thumb, 52 bytes, Stack size 8 bytes, pcmsg.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = UART1SendDataPacket
 </UL>
-<BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;McuToPCSendData
+<BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;McuToPCSendData
+<LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[32]"></a>USART1_IRQHandler</STRONG> (Thumb, 204 bytes, Stack size 16 bytes, pcmsg.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = USART1_IRQHandler &rArr; USART_GetITStatus
 </UL>
-<BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetITStatus
-<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ReceiveData
+<BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetITStatus
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ReceiveData
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_md.o(RESET)
 </UL>
-<P><STRONG><a name="[88]"></a>McuToPCSendData</STRONG> (Thumb, 56 bytes, Stack size 28 bytes, pcmsg.o(.text))
+<P><STRONG><a name="[89]"></a>McuToPCSendData</STRONG> (Thumb, 56 bytes, Stack size 28 bytes, pcmsg.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = McuToPCSendData &rArr; UART1SendDataPacket
 </UL>
-<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART1SendDataPacket
+<BR>[Calls]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART1SendDataPacket
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRobotRun
 <LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskBLEMsgHandle
@@ -1186,12 +1188,12 @@ Global Symbols
 <LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FullActRun
 <LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FlashEraseAll
 <LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SaveAct
-<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;McuToPCSendData
+<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;McuToPCSendData
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UartRxOK
 <LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ServoSetPluseAndTime
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BusServoCtrl
 </UL>
-<BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
+<BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
 </UL>
 
 <P><STRONG><a name="[72]"></a>InitMemory</STRONG> (Thumb, 74 bytes, Stack size 24 bytes, pcmsg.o(.text))
@@ -1215,7 +1217,7 @@ Global Symbols
 
 <P><STRONG><a name="[75]"></a>DelayMs</STRONG> (Thumb, 56 bytes, Stack size 0 bytes, app.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PS2_SetInit
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitFlash
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1227,8 +1229,8 @@ Global Symbols
 <P><STRONG><a name="[6e]"></a>InitLED</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, app.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = InitLED &rArr; GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
-<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
+<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1236,8 +1238,8 @@ Global Symbols
 <P><STRONG><a name="[6f]"></a>InitKey</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, app.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = InitKey &rArr; GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
-<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
+<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1245,8 +1247,8 @@ Global Symbols
 <P><STRONG><a name="[70]"></a>InitBuzzer</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, app.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = InitBuzzer &rArr; GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
-<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
+<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1258,7 +1260,7 @@ Global Symbols
 <LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TimeBaseInit
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB1PeriphClockCmd
-<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_Init
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1266,9 +1268,9 @@ Global Symbols
 <P><STRONG><a name="[6d]"></a>InitADC</STRONG> (Thumb, 140 bytes, Stack size 32 bytes, app.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = InitADC &rArr; GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
+<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_ADCCLKConfig
-<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
 <LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_SoftwareStartConvCmd
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_GetCalibrationStatus
 <LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_StartCalibration
@@ -1322,12 +1324,12 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = TaskTimeHandle &rArr; CheckBatteryVoltage &rArr; GetADCResult &rArr; ADC_RegularChannelConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CheckBatteryVoltage
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ServoPwmDutyCompare
+<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ServoPwmDutyCompare
 </UL>
-<BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
+<BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
 </UL>
 
-<P><STRONG><a name="[76]"></a>TaskRun</STRONG> (Thumb, 2424 bytes, Stack size 16 bytes, app.o(.text))
+<P><STRONG><a name="[77]"></a>TaskRun</STRONG> (Thumb, 2424 bytes, Stack size 16 bytes, app.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 180<LI>Call Chain = TaskRun &rArr; TaskRobotRun &rArr; ActSubFrameRun &rArr; BusServoCtrl &rArr; USART2SendDataPacket
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRobotRun
@@ -1355,14 +1357,14 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRobotRun
 <LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskBLEMsgHandle
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskPCMsgHandle
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
 </UL>
 
 <P><STRONG><a name="[93]"></a>FullActStop</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, robotrun.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ActSubFrameRun
 <LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskBLEMsgHandle
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskPCMsgHandle
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
 </UL>
 
 <P><STRONG><a name="[b1]"></a>ActSubFrameRun</STRONG> (Thumb, 140 bytes, Stack size 96 bytes, robotrun.o(.text))
@@ -1381,9 +1383,9 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ActSubFrameRun
 <LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FullActRun
-<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;McuToPCSendData
+<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;McuToPCSendData
 </UL>
-<BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
+<BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
 </UL>
 
 <P><STRONG><a name="[b2]"></a>SPIx_ReadWriteByte</STRONG> (Thumb, 78 bytes, Stack size 16 bytes, flash.o(.text))
@@ -1406,9 +1408,9 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Cmd
 <LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Init
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
+<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
 <LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
-<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
 <LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPIx_ReadWriteByte
 </UL>
 <BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitFlash
@@ -1546,8 +1548,8 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[c6]"></a>InitPS2</STRONG> (Thumb, 106 bytes, Stack size 8 bytes, ps2gamepad.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
-<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
+<BR><BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
 <LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PS2_SetInit
 </UL>
 
@@ -1574,7 +1576,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PS2_ClearData
 <LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PS2_ReadData
 </UL>
-<BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
+<BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
 </UL>
 
 <P><STRONG><a name="[ca]"></a>PS2_NewButtonState</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, ps2gamepad.o(.text))
@@ -1585,7 +1587,7 @@ Global Symbols
 <P><STRONG><a name="[ae]"></a>PS2_Button</STRONG> (Thumb, 76 bytes, Stack size 0 bytes, ps2gamepad.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PS2_ButtonReleased
 <LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PS2_ButtonPressed
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
 </UL>
 
 <P><STRONG><a name="[af]"></a>PS2_ButtonPressed</STRONG> (Thumb, 28 bytes, Stack size 4 bytes, ps2gamepad.o(.text))
@@ -1594,7 +1596,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PS2_NewButtonState
 <LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PS2_Button
 </UL>
-<BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
+<BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
 </UL>
 
 <P><STRONG><a name="[cb]"></a>PS2_ButtonReleased</STRONG> (Thumb, 28 bytes, Stack size 4 bytes, ps2gamepad.o(.text), UNUSED)
@@ -1603,7 +1605,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[b0]"></a>PS2_AnologData</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, ps2gamepad.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
+<BR><BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
 </UL>
 
 <P><STRONG><a name="[cc]"></a>PS2_Vibration</STRONG> (Thumb, 88 bytes, Stack size 16 bytes, ps2gamepad.o(.text), UNUSED)
@@ -1614,13 +1616,13 @@ Global Symbols
 <P><STRONG><a name="[6c]"></a>InitUart3</STRONG> (Thumb, 162 bytes, Stack size 32 bytes, bluetooth.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 100<LI>Call Chain = InitUart3 &rArr; USART_Init &rArr; RCC_GetClocksFreq
 </UL>
-<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ITConfig
-<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Cmd
+<BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ITConfig
+<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Cmd
 <LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Init
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB1PeriphClockCmd
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
-<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
-<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_Init
+<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1628,8 +1630,8 @@ Global Symbols
 <P><STRONG><a name="[34]"></a>USART3_IRQHandler</STRONG> (Thumb, 172 bytes, Stack size 8 bytes, bluetooth.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = USART3_IRQHandler &rArr; USART_GetITStatus
 </UL>
-<BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetITStatus
-<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ReceiveData
+<BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetITStatus
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ReceiveData
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_md.o(RESET)
 </UL>
@@ -1656,23 +1658,23 @@ Global Symbols
 <LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FullActRun
 <LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FlashEraseAll
 <LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SaveAct
-<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;McuToPCSendData
+<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;McuToPCSendData
 <LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ServoSetPluseAndTime
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BusServoCtrl
 </UL>
-<BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
+<BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
 </UL>
 
 <P><STRONG><a name="[d0]"></a>InitUart2</STRONG> (Thumb, 158 bytes, Stack size 32 bytes, busservoctrl.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 100<LI>Call Chain = InitUart2 &rArr; USART_Init &rArr; RCC_GetClocksFreq
 </UL>
-<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ITConfig
-<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Cmd
+<BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ITConfig
+<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Cmd
 <LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Init
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB1PeriphClockCmd
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
-<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
-<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_Init
+<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitBusServoCtrl
 </UL>
@@ -1680,8 +1682,8 @@ Global Symbols
 <P><STRONG><a name="[73]"></a>InitBusServoCtrl</STRONG> (Thumb, 56 bytes, Stack size 8 bytes, busservoctrl.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 108<LI>Call Chain = InitBusServoCtrl &rArr; InitUart2 &rArr; USART_Init &rArr; RCC_GetClocksFreq
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
-<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
+<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB2PeriphClockCmd
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitUart2
 </UL>
 <BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -1696,8 +1698,8 @@ Global Symbols
 <P><STRONG><a name="[33]"></a>USART2_IRQHandler</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, busservoctrl.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = USART2_IRQHandler &rArr; USART_GetITStatus
 </UL>
-<BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetITStatus
-<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ReceiveData
+<BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetITStatus
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ReceiveData
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f10x_md.o(RESET)
 </UL>
@@ -1709,7 +1711,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ActSubFrameRun
 <LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskBLEMsgHandle
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskPCMsgHandle
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TaskRun
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
@@ -1756,10 +1758,10 @@ Global Symbols
 
 <P><STRONG><a name="[1b3]"></a>__semihosting_library_function</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, indicate_semi.o(.text), UNUSED)
 
-<P><STRONG><a name="[7a]"></a>__aeabi_fdiv</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, fdiv.o(x$fpl$fdiv))
+<P><STRONG><a name="[7b]"></a>__aeabi_fdiv</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, fdiv.o(x$fpl$fdiv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_fdiv
 </UL>
-<BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ServoPwmDutyCompare
+<BR>[Called By]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ServoPwmDutyCompare
 </UL>
 
 <P><STRONG><a name="[d5]"></a>_fdiv</STRONG> (Thumb, 384 bytes, Stack size 16 bytes, fdiv.o(x$fpl$fdiv), UNUSED)
@@ -1767,32 +1769,32 @@ Global Symbols
 <LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_fnaninf
 </UL>
 
-<P><STRONG><a name="[7c]"></a>__aeabi_f2iz</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, ffix.o(x$fpl$ffix))
+<P><STRONG><a name="[7d]"></a>__aeabi_f2iz</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, ffix.o(x$fpl$ffix))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_f2iz
 </UL>
-<BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ServoPwmDutyCompare
+<BR>[Called By]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ServoPwmDutyCompare
 </UL>
 
 <P><STRONG><a name="[d8]"></a>_ffix</STRONG> (Thumb, 54 bytes, Stack size 16 bytes, ffix.o(x$fpl$ffix), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_fnaninf
 </UL>
 
-<P><STRONG><a name="[78]"></a>__aeabi_i2f</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, fflt_clz.o(x$fpl$fflt))
-<BR><BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ServoPwmDutyCompare
+<P><STRONG><a name="[79]"></a>__aeabi_i2f</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, fflt_clz.o(x$fpl$fflt))
+<BR><BR>[Called By]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ServoPwmDutyCompare
 </UL>
 
 <P><STRONG><a name="[1b4]"></a>_fflt</STRONG> (Thumb, 48 bytes, Stack size 0 bytes, fflt_clz.o(x$fpl$fflt), UNUSED)
 
-<P><STRONG><a name="[79]"></a>__aeabi_ui2f</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, fflt_clz.o(x$fpl$ffltu))
-<BR><BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ServoPwmDutyCompare
+<P><STRONG><a name="[7a]"></a>__aeabi_ui2f</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, fflt_clz.o(x$fpl$ffltu))
+<BR><BR>[Called By]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ServoPwmDutyCompare
 </UL>
 
 <P><STRONG><a name="[1b5]"></a>_ffltu</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, fflt_clz.o(x$fpl$ffltu), UNUSED)
 
-<P><STRONG><a name="[7b]"></a>__aeabi_fmul</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, fmul.o(x$fpl$fmul))
+<P><STRONG><a name="[7c]"></a>__aeabi_fmul</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, fmul.o(x$fpl$fmul))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_fmul
 </UL>
-<BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ServoPwmDutyCompare
+<BR>[Called By]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ServoPwmDutyCompare
 </UL>
 
 <P><STRONG><a name="[d9]"></a>_fmul</STRONG> (Thumb, 258 bytes, Stack size 16 bytes, fmul.o(x$fpl$fmul), UNUSED)
@@ -1834,16 +1836,16 @@ Local Symbols
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_ICInit
 </UL>
 
-<P><STRONG><a name="[83]"></a>SetSysClockTo72</STRONG> (Thumb, 214 bytes, Stack size 12 bytes, system_stm32f10x.o(.text))
+<P><STRONG><a name="[84]"></a>SetSysClockTo72</STRONG> (Thumb, 214 bytes, Stack size 12 bytes, system_stm32f10x.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = SetSysClockTo72
 </UL>
-<BR>[Called By]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSysClock
+<BR>[Called By]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSysClock
 </UL>
 
-<P><STRONG><a name="[82]"></a>SetSysClock</STRONG> (Thumb, 8 bytes, Stack size 8 bytes, system_stm32f10x.o(.text))
+<P><STRONG><a name="[83]"></a>SetSysClock</STRONG> (Thumb, 8 bytes, Stack size 8 bytes, system_stm32f10x.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = SetSysClock &rArr; SetSysClockTo72
 </UL>
-<BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSysClockTo72
+<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetSysClockTo72
 </UL>
 <BR>[Called By]<UL><LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemInit
 </UL>

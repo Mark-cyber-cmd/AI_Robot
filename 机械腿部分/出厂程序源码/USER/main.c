@@ -1,6 +1,7 @@
 
 #include "include.h"
 
+uint8 robot_id[11] = {0x55, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 int main(void)
 {
@@ -26,6 +27,9 @@ int main(void)
 	BusServoCtrl(5,SERVO_MOVE_TIME_WRITE,500,1000);
 	BusServoCtrl(6,SERVO_MOVE_TIME_WRITE,500,1000);
 	DelayMs(1000);
+	
+	UART1SendDataPacket(robot_id, 11);
+	
 	
 	
 	while(1)
