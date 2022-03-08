@@ -5,6 +5,8 @@ from Gyro import *
 
 '''Input: 连续字符串  Output： 二进制数据数组     '''
 
+data_base_zzm___ = './Data/Data_base/zzm/大腿数据_8/'
+
 
 def format_data(gyro_data):
     gyro_data = gyro_data.split()
@@ -29,9 +31,10 @@ def simulated_gyro(gyro_data, s_id):
 
     client.send(s_id)
     time.sleep(0.1)
-    while 1:
-        for i in gyro_data:
-            client.send(i)
+
+    for i in gyro_data:
+        client.send(i)
+        time.sleep(0.1)
 
 
 def simulated_robot(s_id):
@@ -53,9 +56,9 @@ def simulation_start():
     simulated_gyro_4.setDaemon(True)
     simulated_gyro_4.start()
 
-    simulated_Robot = Thread(target=simulated_robot, args=(Id_robot,))
-    simulated_Robot.setDaemon(True)
-    simulated_Robot.start()
+    # simulated_Robot = Thread(target=simulated_robot, args=(Id_robot,))
+    # simulated_Robot.setDaemon(True)
+    # simulated_Robot.start()
 
 
 def get_ip():
@@ -82,25 +85,25 @@ Id_4 = b'\x55\x01\x04\x00\x00\x00\x00\x00\x00\x00'
 
 Id_robot = b'\x55\x00\x01\x00\x00\x00\x00\x00\x00\x00'
 
-with open('./Data/Data_base/zzm/大腿数据_8/gyro_roll1.txt', 'r') as f:
+with open(data_base_zzm___ + 'example_roll1.txt', 'r') as f:
     gyro_data_roll1 = f.read()
     gyro_data_roll1 = format_data(gyro_data_roll1)
-with open('./Data/Data_base/zzm/大腿数据_8/gyro_yaw1.txt', 'r') as f:
+with open(data_base_zzm___ + 'gyro_yaw1.txt', 'r') as f:
     gyro_data_yaw1 = f.read()
     gyro_data_yaw1 = format_data(gyro_data_yaw1)
-with open('./Data/Data_base/zzm/大腿数据_8/gyro_pitch1.txt', 'r') as f:
+with open(data_base_zzm___ + 'gyro_pitch1.txt', 'r') as f:
     gyro_data_pitch1 = f.read()
     gyro_data_pitch1 = format_data(gyro_data_pitch1)
 
 gyro_data_1 = pack_data(gyro_data_roll1, gyro_data_yaw1, gyro_data_pitch1)
 
-with open('./Data/Data_base/zzm/大腿数据_3/gyro_roll4.txt', 'r') as f:
+with open(data_base_zzm___ + 'example_roll4.txt', 'r') as f:
     gyro_data_roll4 = f.read()
     gyro_data_roll4 = format_data(gyro_data_roll4)
-with open('./Data/Data_base/zzm/大腿数据_3/gyro_yaw4.txt', 'r') as f:
+with open(data_base_zzm___ + 'gyro_yaw4.txt', 'r') as f:
     gyro_data_yaw4 = f.read()
     gyro_data_yaw4 = format_data(gyro_data_yaw4)
-with open('./Data/Data_base/zzm/大腿数据_3/gyro_pitch4.txt', 'r') as f:
+with open(data_base_zzm___ + 'gyro_pitch4.txt', 'r') as f:
     gyro_data_pitch4 = f.read()
     gyro_data_pitch4 = format_data(gyro_data_pitch4)
 

@@ -17,6 +17,8 @@ class Robot:
         self.back_data = []
         self.time_start = 0
 
+        self.position = [0, 500, 500, 500, 500, 500, 500]
+
     def connect(self):
         while 1:
             s_client, adder = self.server.accept()
@@ -38,6 +40,9 @@ class Robot:
             servo_cmd.append(struct.pack('H', int(s_angle[i])))
         servo_cmd = b''.join(servo_cmd)
         self.client.send(servo_cmd)
+
+        for index, element in enumerate(s_id):
+            self.position[element] = round(s_angle[index], 2)
         return
 
     def pos(self, s_id):

@@ -1,4 +1,5 @@
 # coding utf-8
+from Control import *
 from Display import *
 from threading import Thread
 
@@ -33,8 +34,8 @@ if __name__ == '__main__':
             gyro_3_thread.start()
             break
 
-    # control_thread = Thread(target=control_main, args=())
-    # control_thread.setDaemon(True)
-    # control_thread.start()
+    control_thread = Thread(target=control_main, args=())
+    control_thread.setDaemon(True)
+    control_thread.start()
 
     display_main()

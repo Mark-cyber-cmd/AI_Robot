@@ -75,7 +75,7 @@ def control_main():
             gravity = 1
 
         # 在gravity=1状态下跟随动作并检测是否落脚
-        if abs(gyro_3.roll + gyro_1.roll) > 1 and gravity == 1:
+        if abs(gyro_3.roll + gyro_1.roll) > 1 and gravity == 1 and abs(gyro_3.roll) <= 135:
             bus_data_s[0] = \
                 500 + gyro_3.roll / 270 * 1000
             bus_data_s[1] = \
@@ -102,7 +102,7 @@ def control_main():
             gravity = -1
 
         # 相同的操作在另外一只脚上的跟随
-        if abs(gyro_3.roll + gyro_1.roll) > 1 and gravity == -1:
+        if abs(gyro_3.roll + gyro_1.roll) > 1 and gravity == -1 and abs(gyro_1.roll) < 135:
             bus_data_s[0] = \
                 500 - gyro_1.roll / 270 * 1000
             bus_data_s[1] = \
