@@ -1,4 +1,4 @@
-%% 此程序matlab编程实现的BP神经网络
+    %% 此程序matlab编程实现的BP神经网络
 % 清空环境变量
 clear;
 clc
